@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.png" type="image/gif" sizes="64x64">
+    <title>JEJE.RBG | Multimedia Design Manifesto</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="loading-screen">
+        <div class="mono">SYSTEM_INITIALIZING...</div>
+        <div class="mono" id="loader-status">LOAD_MULTIMEDIA_DESIGN: 0%</div>
+        <div class="loader-bar">
+            <div class="loader-progress" id="loader-progress"></div>
+        </div>
+        <div class="mono" style="margin-top: 1rem; opacity: 0.5;">JEJE.RBG // MULTIMEDIA_MANIFESTO</div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <div class="grid-overlay"></div>
+
+    <div id="project-overlay" class="project-overlay">
+        <div class="overlay-scroll-area" id="overlay-scroll-area">
+            <div class="container">
+                <div id="overlay-body" class="overlay-content"></div>
+            </div>
+        </div>
+
+        <div class="overlay-nav-bar">
+            <button class="overlay-btn" id="overlay-prev">← PREV</button>
+            <button class="overlay-btn overlay-close" id="close-overlay">ESC / CLOSE</button>
+            <button class="overlay-btn" id="overlay-next">NEXT →</button>
+        </div>
+    </div>
+
+    <nav id="main-nav">
+        <div class="container nav-inner">
+            <div class="nav-brand-container nav-logo" id="nav-logo">
+                <a href="#" class="liquid-text liquid-text-small" style="text-decoration: none;" aria-label="JEJE.RBG">
+                    <span aria-hidden="true">JEJE.RBG</span>
+                </a>
+                <span class="mono text-accent" id="nav-scramble">ARHITECT DIGITAL</span>
+            </div>
+
+            <div class="nav-links">
+                <a href="#branding" class="mono glitch-text nav-link" data-text="[01] BRANDING"><span class="ro">[01] BRANDING</span><span class="en">[01] BRANDING</span></a>
+                <a href="#graphic-design" class="mono glitch-text nav-link" data-text="[02] DESIGN"><span class="ro">[02] DESIGN</span><span class="en">[02] DESIGN</span></a>
+                <a href="#video-social" class="mono glitch-text nav-link" data-text="[03] VIDEO"><span class="ro">[03] VIDEO</span><span class="en">[03] VIDEO</span></a>
+                <a href="#web-dev" class="mono glitch-text nav-link" data-text="[04] WEB"><span class="ro">[04] WEB</span><span class="en">[04] WEB</span></a>
+                <a href="#contact" class="mono glitch-text nav-link" data-text="[05] CONTACT"><span class="ro">[05] CONTACT</span><span class="en">[05] CONTACT</span></a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="menu-trigger" id="menu-trigger">MENU</button>
+                <button class="lang-toggle" id="toggle-power" title="Toggle Low Power Mode">⚡</button>
+                <button class="lang-toggle" id="toggle-lang">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+       <section class="hero" id="hero-slim" style="position: relative; overflow: hidden; background-color: var(--black);">
+            
+            <canvas id="geometry-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;"></canvas>
+
+            <div class="container hero-content" style="position: relative; z-index: 1;">
+                <div class="hero-top">
+                    <h1 class="liquid-text hero-title" id="hero-title">JEJE.RBG</h1>
+                    <div id="scramble-target" class="large-text mono text-accent">ARHITECT DIGITAL</div>
+                </div>
+
+                <div class="tagline-transition">
+                    <div class="sarcastic-quote">
+                        <span class="default-text down-arrow ro">↓ Vorba multă... ↓</span>
+                        <span class="default-text down-arrow en">↓ Less talking... ↓</span>
+                        <span class="hover-text text-accent">:)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="branding" class="interactive-section">
+            <div class="container">
+                <div class="design-grid-top">
+                    <div>
+                        <h2 class="section-title ro"><span class="title-num">[01]</span> BRANDING</h2>
+                        <h2 class="section-title en"><span class="title-num">[01]</span> BRANDING</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="branding-slider">
+                <div class="slider-track" id="brand-track">
+                    <div class="slide-card active trigger-overlay" data-project="brand-1">
+                        <div class="slide-info">
+                            <span class="mono text-accent">A // ALLMA ROAD</span>
+                            <p class="mono slide-desc ro">Găzduire</p>
+                            <p class="mono slide-desc en">Lodging</p>
+                            <span class="mono expand-hint"><span class="ro">VEZI_PROIECT ↗</span><span class="en">CLICK_TO_EXPAND ↗</span></span>
+                        </div>
+                        <div class="slide-img"><img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568436/allmaroad_logo_spmjie.jpg" alt="Allma Road Logo" loading="lazy" decoding="async"></div>
+                    </div>
+                    <div class="slide-card active trigger-overlay" data-project="brand-2">
+                        <div class="slide-info">
+                            <span class="mono text-accent">B // spiraltribe.ro</span>
+                            <p class="mono slide-desc ro">Agentie de Turism</p>
+                            <p class="mono slide-desc en">Travel Agency</p>
+                            <span class="mono expand-hint"><span class="ro">VEZI_PROIECT ↗</span><span class="en">CLICK_TO_EXPAND ↗</span></span>
+                        </div>
+                        <div class="slide-img"><img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568436/spiraltribe.ro_logo_tztyuo.jpg" alt="Spiral Tribe Logo" loading="lazy" decoding="async"></div>
+                    </div>
+                    <div class="slide-card trigger-overlay" data-project="brand-3">
+                        <div class="slide-info">
+                            <span class="mono text-accent">C // Dreea</span>
+                            <p class="mono slide-desc ro">Artist</p>
+                            <p class="mono slide-desc en">Artist</p>
+                            <span class="mono expand-hint"><span class="ro">VEZI_PROIECT ↗</span><span class="en">CLICK_TO_EXPAND ↗</span></span>
+                        </div>
+                        <div class="slide-img"><img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568435/dreea_logo_oavkdy.jpg" alt="Dreea Logo" loading="lazy" decoding="async"></div>
+                    </div>
+                    <div class="slide-card trigger-overlay" data-project="brand-4">
+                        <div class="slide-info">
+                            <span class="mono text-accent">D // Aldi Records</span>
+                            <p class="mono slide-desc ro">Casa de discuri</p>
+                            <p class="mono slide-desc en">Record label</p>
+                            <span class="mono expand-hint"><span class="ro">VEZI_PROIECT ↗</span><span class="en">CLICK_TO_EXPAND ↗</span></span>
+                        </div>
+                        <div class="slide-img"><img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568436/aldi_logo_gvhkak.jpg" alt="Aldi Records Logo" loading="lazy" decoding="async"></div>
+                    </div>
+                    <div class="slide-card trigger-overlay" data-project="brand-5">
+                        <div class="slide-info">
+                            <span class="mono text-accent">E // Beyond the Peak</span>
+                            <p class="mono slide-desc ro">ONG</p>
+                            <p class="mono slide-desc en">NGO</p>
+                            <span class="mono expand-hint"><span class="ro">VEZI_PROIECT ↗</span><span class="en">CLICK_TO_EXPAND ↗</span></span>
+                        </div>
+                        <div class="slide-img"><img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568435/beyondthepeak_logo_xtgwla.jpg" alt="Beyond the Peak Logo" loading="lazy" decoding="async"></div>
+                    </div>
+                    <div class="slide-card trigger-overlay" data-project="brand-6">
+                        <div class="slide-info">
+                            <span class="mono text-accent">F // Haiduk Labs</span>
+                            <p class="mono slide-desc ro">Agenție Multi-Media</p>
+                            <p class="mono slide-desc en">Multi-Media Agency</p>
+                            <span class="mono expand-hint"><span class="ro">VEZI_PROIECT ↗</span><span class="en">CLICK_TO_EXPAND ↗</span></span>
+                        </div>
+                        <div class="slide-img"><img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778683932/haiduk_luvywj.png" alt="Haiduk Labs Logo" loading="lazy" decoding="async"></div>
+                    </div>
+                    <div class="slide-card trigger-overlay" data-project="brand-7">
+                        <div class="slide-info">
+                            <span class="mono text-accent">G // M&P Facade</span>
+                            <p class="mono slide-desc ro">Arhitectură Exterior</p>
+                            <p class="mono slide-desc en">Exterior Architecture</p>
+                            <span class="mono expand-hint"><span class="ro">VEZI_PROIECT ↗</span><span class="en">CLICK_TO_EXPAND ↗</span></span>
+                        </div>
+                        <div class="slide-img"><img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568435/mp-logo_dm2get.jpg" alt="M&P Facade Logo" loading="lazy" decoding="async"></div>
+                    </div>
+                </div>
+
+                <div class="container drag-hint-wrapper desktop-only">
+                    <span class="mono drag-hint text-accent ro">⟷ APASĂ ȘI TRAGE PENTRU A EXPLORA</span>
+                    <span class="mono drag-hint text-accent en">⟷ HOLD & DRAG TO EXPLORE</span>
+                </div>
+
+                <div class="container">
+                    <div class="slider-controls">
+                        <button class="mono slider-btn" id="brand-prev">← PREV</button>
+                        <span class="mono" id="brand-counter">1 / 7</span>
+                        <button class="mono slider-btn" id="brand-next">NEXT →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="graphic-design" class="bg-grey interactive-section">
+            <div class="container">
+                <div class="design-grid-top">
+                    <div>
+                        <h2 class="section-title ro"><span class="title-num">[02]</span> DESIGN GRAFIC</h2>
+                        <h2 class="section-title en"><span class="title-num">[02]</span> GRAPHIC DESIGN</h2>
+                    </div>
+                    <div class="mono desc-text" style="margin-bottom: 1rem;">
+                        <span class="ro">Sisteme vizuale construite pentru impact, unde estetica transformă materialele promoționale în piese grafice de sine stătătoare</span>
+                        <span class="en">Visual systems built for impact, where aesthetics transform promotional materials into standalone graphic pieces</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bauhaus-scroll-wrapper" id="bauhaus-scroll">
+                <div class="bauhaus-grid">
+                    <div class="bauhaus-item span-2x2 trigger-overlay" data-project="graphic-1">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778572687/Artwork_Dreea_-_Scuze_icc7oq.jpg" alt="Dreea Scuze" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-1x2 trigger-overlay" data-project="graphic-2">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778582975/629595904_122269562858227954_4869806751389132552_n_ii5o0y.jpg" alt="Dreea Promo" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-1x2 trigger-overlay" data-project="graphic-3">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778582848/spiral-cover_diuj60.png" alt="Spiral Cover" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-3x4 contain-img trigger-overlay" data-project="graphic-4">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778583818/1778583780725.publer.com_yjvgcs.jpg" alt="Spiral Social 1" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-2x2 trigger-overlay" data-project="graphic-5">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778572689/Artwork_Muzica-Populara22_dqqcdb.jpg" alt="Muzica Populara" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-2x1 trigger-overlay" data-project="graphic-6">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778582594/fest_flyer_egdusn.jpg" alt="Playground Fest" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-1x1 trigger-overlay" data-project="graphic-7">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778572688/Artwork_Ela_-_Cine_m-a_pus_nmdsl3.jpg" alt="Ela Artwork" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-1x1 trigger-overlay" data-project="graphic-8">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778572688/Artwork_Crina_-_Cel_mai_bun_refren_wgsez8.jpg" alt="Crina Artwork" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-3x4 contain-img trigger-overlay" data-project="graphic-9">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778583818/1778583791046.publer.com_rupqra.jpg" alt="Spiral Social 2" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-2x2 trigger-overlay" data-project="graphic-10">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778582593/merch_design_vyntec.png" alt="Merch Design" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-1x1 trigger-overlay" data-project="graphic-11">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778572687/Artwork_Dreea_-_Drama_pe_hartie_a34d8a.jpg" alt="Dreea Drama" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-1x1 trigger-overlay" data-project="graphic-12">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778572688/Artwork_Dreea_-_Ma-ntelegi_crwnfn.jpg" alt="Dreea Ma-ntelegi" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-3x4 contain-img trigger-overlay" data-project="graphic-13">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778583817/1778583790074.publer.com_qrqksi.jpg" alt="Spiral Social 3" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-1x2 contain-img trigger-overlay" data-project="graphic-14">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778585511/dreea_x_i-auzi_una_zwyh4l.jpg" alt="Dreea Event" loading="lazy" decoding="async">
+                    </div>
+                    <div class="bauhaus-item span-3x4 contain-img trigger-overlay" data-project="graphic-15">
+                        <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600/v1778599992/social-media-post_dqdfg1.jpg" alt="Social Media Post" loading="lazy" decoding="async">
+                    </div>
+                </div>
+            </div>
+
+            <div class="container drag-hint-wrapper">
+                <span class="mono drag-hint text-accent ro">⟷ APASĂ ȘI TRAGE // ◯ APASĂ PENTRU DETALII</span>
+                <span class="mono drag-hint text-accent en">⟷ HOLD & DRAG // ◯ TAP TO EXPAND</span>
+            </div>
+        </section>
+
+        <section id="video-social" class="bg-black">
+            <div class="container">
+                <div class="design-grid-top" style="margin-bottom: var(--space-md);">
+                    <div>
+                        <h2 class="section-title ro"><span class="title-num">[03]</span> VIDEO & SOCIAL</h2>
+                        <h2 class="section-title en"><span class="title-num">[03]</span> VIDEO & SOCIAL</h2>
+                    </div>
+                    <div class="mono desc-text">
+                        <span class="ro">Editare video avansată, direcție artistică și conținut optimizat pentru retenție pe platformele de social media.</span>
+                        <span class="en">Advanced video editing, art direction and content optimized for retention on social media platforms.</span>
+                    </div>
+                </div>
+
+                <div class="video-category-title mono text-accent ro" style="margin-top: 3rem;">/// CONTENT_LONG_FORM<br>[EDITARE]</div>
+                <div class="video-category-title mono text-accent en" style="margin-top: 3rem;">/// LONG_FORM_CONTENT<br>[EDITING]</div>
+                
+                <div class="yt-grid">
+                    <a href="https://www.youtube.com/watch?v=vTZ4YsTFtNk&t=9s" target="_blank" class="yt-card">
+                        <div class="yt-thumb">
+                            <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778342104/Ferma1_kvcm2c.jpg" alt="Bianca Adam" loading="lazy" decoding="async">
+                            <div class="digital-scanline"></div>
+                            <div class="yt-stats mono">173k VIEWS</div>
+                            <div class="yt-duration mono">37:15</div>
+                        </div>
+                        <div class="yt-meta">
+                            <h3 class="yt-title ro">Am Fost Ingrijitoare de Cai 24H cu @Nana</h3>
+                            <h3 class="yt-title en">24H Horse Caretaker with @Nana</h3>
+                            <span class="mono expand-hint video-hint" style="margin-top: 1rem; display: block;"><span class="ro">RULEAZĂ_VIDEO ►</span><span class="en">PLAY_MEDIA ►</span></span>
+                        </div>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="yt-card">
+                        <div class="yt-thumb">
+                            <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778342165/EE1_qfgmaa.jpg" alt="Bianca Adam Europa" loading="lazy" decoding="async">
+                            <div class="digital-scanline"></div>
+                            <div class="yt-stats mono">98K VIEWS</div>
+                            <div class="yt-duration mono">01:32:41</div>
+                        </div>
+                        <div class="yt-meta">
+                            <h3 class="yt-title ro">EUROPA EXPRESS EP.1 - 6 Vedete Se Bat</h3>
+                            <h3 class="yt-title en">EUROPA EXPRESS EP.1 - 6 Celebrities Fight</h3>
+                            <span class="mono expand-hint video-hint" style="margin-top: 1rem; display: block;"><span class="ro">RULEAZĂ_VIDEO ►</span><span class="en">PLAY_MEDIA ►</span></span>
+                        </div>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="yt-card">
+                        <div class="yt-thumb">
+                            <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778342103/EE2_ra9m4v.jpg" alt="Bianca Adam Europa 2" loading="lazy" decoding="async">
+                            <div class="digital-scanline"></div>
+                            <div class="yt-stats mono">44K VIEWS</div>
+                            <div class="yt-duration mono">01:17:15</div>
+                        </div>
+                        <div class="yt-meta">
+                            <h3 class="yt-title ro">EUROPA EXPRESS EP.2 - Prima Cearta</h3>
+                            <h3 class="yt-title en">EUROPA EXPRESS EP.2 - The First Fight</h3>
+                            <span class="mono expand-hint video-hint" style="margin-top: 1rem; display: block;"><span class="ro">RULEAZĂ_VIDEO ►</span><span class="en">PLAY_MEDIA ►</span></span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="video-category-title mono text-accent ro" style="margin-top: var(--space-lg);">/// CONTENT_SHORT_FORM<br>[CONCEPT & DIRECȚIE]</div>
+                <div class="video-category-title mono text-accent en" style="margin-top: var(--space-lg);">/// SHORT_FORM_CONTENT<br>[CONCEPT & DIRECTION]</div>
+                
+                <div class="reels-stack-wrapper interactive-section">
+                    <div class="reels-grid" id="reels-grid">
+                        <a href="https://vm.tiktok.com/ZNRGd5rUo/" target="_blank" class="reel-card">
+                            <div class="reel-thumb">
+                                <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_500/v1778598410/short-form_2_dm2tze.png" alt="Reel 1" loading="lazy" decoding="async">
+                                <div class="digital-scanline"></div>
+                                <div class="yt-stats mono">903K VIEWS</div>
+                                <div class="reel-category mono">TIKTOK</div>
+                                <div class="reel-stats mono">
+                                    <span title="Likes">❤️65.9K</span><span title="Comments">💬417</span><span title="Shares">📤15K</span><span title="Reposts">🔁1.2K</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="https://www.instagram.com/reels/DVEPZp6jAX4/" target="_blank" class="reel-card">
+                            <div class="reel-thumb">
+                                <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_500/v1778598409/short-form_3_arnmdy.jpg" alt="Reel 2" loading="lazy" decoding="async">
+                                <div class="digital-scanline"></div>
+                                <div class="yt-stats mono">532K VIEWS</div>
+                                <div class="reel-category mono">REEL</div>
+                                <div class="reel-stats mono">
+                                    <span title="Likes">❤️34.6K</span><span title="Comments">💬172</span><span title="Shares">📤11.5K</span><span title="Reposts">🔁723</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="https://www.instagram.com/reel/C7l3CSkt8Lk/?igsh=MnA1cWU2dzBsanZ6" target="_blank" class="reel-card">
+                            <div class="reel-thumb">
+                                <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_500/v1778598409/short-form_1_t1ifdh.jpg" alt="Reel 3" loading="lazy" decoding="async">
+                                <div class="digital-scanline"></div>
+                                <div class="yt-stats mono">1.1M VIEWS</div>
+                                <div class="reel-category mono">REEL</div>
+                                <div class="reel-stats mono">
+                                    <span title="Likes">❤️37.9K</span><span title="Comments">💬322</span><span title="Shares">📤15K</span><span title="Saves">🔖1.5K</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="https://youtube.com/shorts/j4RwkSrqWHg?is=exeAd3kBfQHq8gqC" target="_blank" class="reel-card">
+                            <div class="reel-thumb">
+                                <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_500/v1778598409/short-form_4_d0zqez.jpg" alt="Reel 4" loading="lazy" decoding="async">
+                                <div class="digital-scanline"></div>
+                                <div class="yt-stats mono">894k VIEWS</div>
+                                <div class="reel-category mono">SHORTS</div>
+                                <div class="reel-stats mono">
+                                    <span title="Likes">❤️8.8K</span><span title="Comments">💬45</span><span title="Shares">📤6.3K</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="https://vm.tiktok.com/ZNRGdunmC/" target="_blank" class="reel-card">
+                            <div class="reel-thumb">
+                                <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_500/v1778598410/short-form_1_lnrp3c.png" alt="Reel 5" loading="lazy" decoding="async">
+                                <div class="digital-scanline"></div>
+                                <div class="yt-stats mono">566K VIEWS</div>
+                                <div class="reel-category mono">TIKTOK</div>
+                                <div class="reel-stats mono">
+                                    <span title="Likes">❤️48.6K</span><span title="Comments">💬79</span><span title="Shares">📤447</span><span title="Saves">🔖2.4K</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="https://www.instagram.com/reel/DXTfLL6DUeg/?igsh=MXRkc254d2E4cHBsdA==" target="_blank" class="reel-card">
+                            <div class="reel-thumb">
+                                <img src="https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_500/v1778598409/short-form_2_gnrelb.jpg" alt="Reel 6" loading="lazy" decoding="async">
+                                <div class="digital-scanline"></div>
+                                <div class="yt-stats mono">121K VIEWS</div>
+                                <div class="reel-category mono">REEL</div>
+                                <div class="reel-stats mono">
+                                    <span title="Likes">❤️2.6K</span><span title="Comments">💬261</span><span title="Shares">📤744</span><span title="Reposts">🔁55</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="reels-controls mono desktop-only-hide">
+                        <button id="reel-prev">← PREV</button>
+                        <button id="reel-next">NEXT →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="web-dev" class="bg-grey">
+            <div class="container">
+                <h2 class="section-title ro"><span class="title-num">[04]</span> WEB DEV</h2>
+                <h2 class="section-title en"><span class="title-num">[04]</span> WEB DEV</h2>
+
+                <div class="minimal-web-list">
+                    <div class="web-item">
+                        <div>
+                            <h3>A // SPIRALTRIBE.RO</h3>
+                            <p class="ro">O platformă dinamică pentru agenția de turism, axată pe experiențe de rezervare fără probleme și aventuri atent selecționate pentru exploratorul modern.</p>
+                            <p class="en">A dynamic travel agency platform focused on seamless booking experiences and curated adventures for the modern explorer.</p>
+                        </div>
+                        <div class="web-actions">
+                            <a href="https://www.spiraltribe.ro" target="_blank" class="action-link primary">LIVE PREVIEW ↗</a>
+                        </div>
+                    </div>
+
+                    <div class="web-item">
+                        <div>
+                            <h3>B // DREEA.ART</h3>
+                            <p class="ro">O pagină de destinație imersivă, concepută pentru a amplifica identitatea sonică și viziunea creativă a artistei muzicale Dreea.</p>
+                            <p class="en">A sleek, immersive landing page designed to amplify the sonic identity and creative vision of musical artist Dreea.</p>
+                        </div>
+                        <div class="web-actions">
+                            <a href="https://www.dreea.art" target="_blank" class="action-link primary">LIVE PREVIEW ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="bg-accent text-black">
+            <div class="container">
+                <div class="contact-form-grid">
+                    <div>
+                        <h2 class="section-title text-black" style="margin-bottom: 2rem;"><span class="title-num" style="color: var(--black);">[05]</span> CONTACT</h2>
+                        
+                        <div class="contact-links" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <a href="mailto:nicadragoj537@gmail.com" class="contact-btn">
+                                <span class="mono label">/// EMAIL</span>
+                                <span class="value">nicadragoj537@gmail.com ↗</span>
+                            </a>
+                            
+                            <a href="tel:+40729592767" class="contact-btn">
+                                <span class="mono label">
+                                    <span class="ro">/// TELEFON</span><span class="en">/// PHONE</span>
+                                </span>
+                                <span class="value">+40 729 592 767 ↗</span>
+                            </a>
+
+                            <a href="https://wa.me/40729592767" class="contact-btn">
+                                <span class="mono label">/// WHATSAPP </span>
+                                <span class="value">
+                                    <span class="ro">Deschide chat ↗</span><span class="en">Open chat ↗</span>
+                                </span>
+                            </a>
+                        </div>
+
+                        <div id="terminal-checks" style="margin-top: 3rem; font-family: var(--font-mono); font-size: 0.75rem; color: rgba(0,0,0,0.6); display: flex; flex-direction: column; gap: 0.6rem;">
+                            <div class="check-item" style="opacity: 0; transform: translateX(-10px);">
+                                <span class="text-black" style="font-weight: 700;">></span> 
+                                <span class="ro">Are studii superioare în domeniu</span>
+                                <span class="en">Has academic studies in the field</span>
+                            </div>
+                            <div class="check-item" style="opacity: 0; transform: translateX(-10px);">
+                                <span class="text-black" style="font-weight: 700;">></span> 
+                                <span class="ro">Poate emite factură fiscală</span>
+                                <span class="en">Can issue a legal invoice</span>
+                            </div>
+                            <div class="check-item" style="opacity: 0; transform: translateX(-10px);">
+                                <span class="text-black" style="font-weight: 700;">></span> 
+                                <span class="ro">Lucrează pe bază de brief, nu pe bază de 'chef' </span>
+                                <span class="en">Works on a brief basis, not on a 'mood' basis</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" action="https://formsubmit.co/nicadragoj537@gmail.com" method="POST">
+                        <input type="text" name="name" data-ro="Numele tău" data-en="Your name" placeholder="Numele tău" required>
+                        <input type="email" name="email" data-ro="Adresa de email" data-en="Email address" placeholder="Adresa de email" required>
+                        <select name="service" class="full-width" required>
+                            <option value="" disabled selected data-ro="Alege tipul de serviciu" data-en="Choose service type">Alege tipul de serviciu</option>
+                            <option value="branding" data-ro="Branding / Identitate" data-en="Branding / Identity">Branding / Identitate</option>
+                            <option value="graphic_design" data-ro="Design Grafic" data-en="Graphic Design">Design Grafic</option>
+                            <option value="video" data-ro="Editare Video / Social Media" data-en="Video Editing / Social Media">Editare Video / Social Media</option>
+                            <option value="web_dev" data-ro="Web Development" data-en="Web Development">Web Development</option>
+                        </select>
+                        <textarea name="message" class="full-width" data-ro="Detalii despre proiect" data-en="Project details" placeholder="Detalii despre proiect" rows="3" required></textarea>
+                        <button type="submit" class="submit-btn full-width" data-ro="TRIMITE MESAJ" data-en="SEND MESSAGE">TRIMITE MESAJ</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <p class="mono">NICA DRAGOȘ // PORTFOLIO</p>
+            <p class="mono">
+                <span class="ro">© 2026 TOATE DREPTURILE REZERVATE</span>
+                <span class="en">© 2026 ALL RIGHTS RESERVED</span>
+            </p>
+        </div>
+    </footer>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#branding" class="glitch-text nav-link" data-text="Branding">Branding</a>
+        <a href="#graphic-design" class="glitch-text nav-link" data-text="Design">Design</a>
+        <a href="#video-social" class="glitch-text nav-link" data-text="Video">Video</a>
+        <a href="#web-dev" class="glitch-text nav-link" data-text="Web">Web</a>
+        <a href="#contact" class="glitch-text nav-link" data-text="Contact">Contact</a>
+    </div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
