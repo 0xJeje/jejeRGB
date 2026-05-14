@@ -55,7 +55,6 @@ body {
 
 body.no-scroll {
   overflow: hidden !important;
-  touch-action: none;
 }
 
 /* Background Noise */
@@ -290,7 +289,10 @@ nav.scrolled { padding: 0.8rem 0; background: rgba(0, 0, 0, 0.98); border-bottom
 
 /* OPTIMIZED MOBILE MENU: Solid background, NO blur */
 .mobile-menu {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.98); 
+  position: fixed; top: 0; left: 0; width: 100%; 
+  height: 100vh;
+  height: 100dvh; /* Address bar fix */
+  background: rgba(0, 0, 0, 0.98);
   z-index: var(--z-mobile-menu); display: none; flex-direction: column; justify-content: center; align-items: center;
   gap: clamp(1rem, 4vh, 2rem); padding: 2rem; overscroll-behavior: contain;
 }
@@ -551,10 +553,26 @@ footer { padding: var(--space-md) 0; border-top: 1px solid var(--grey-mid); back
 ========================================= */
 /* OPTIMIZED OVERLAY: Solid background, NO blur */
 .project-overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); 
-  z-index: var(--z-overlay); display: none; flex-direction: column;
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100vh; /* Fallback for very old browsers */
+  height: 100dvh; /* Fixes the mobile address bar issue */
+  background: rgba(0,0,0,0.98); 
+  z-index: var(--z-overlay); 
+  display: none; 
+  flex-direction: column;
+  overscroll-behavior: none; /* Helps prevent body scrolling */
 }
-.overlay-scroll-area { flex: 1; width: 100%; overflow-y: auto; }
+/* REPLACE YOUR EXISTING .overlay-scroll-area WITH THIS */
+.overlay-scroll-area { 
+  flex: 1; 
+  width: 100%; 
+  overflow-y: auto; 
+  overscroll-behavior: contain; /* CRITICAL: Stops the background from scrolling */
+  -webkit-overflow-scrolling: touch; /* Ensures smooth momentum scrolling on iOS */
+}
 .overlay-nav-bar {
   position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; z-index: 11000;
   background: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%); padding: 4rem 0rem 0rem 0rem; pointer-events: none;
@@ -568,7 +586,12 @@ footer { padding: var(--space-md) 0; border-top: 1px solid var(--grey-mid); back
 .overlay-text-wrapper { text-align: center; max-width: 900px; margin: 0 auto; }
 
 /* A. Branding Overlay (Modular Flex Layout) */
-.brand-overlay-wrapper { padding: 5vh 0 10vh 0; display: flex; flex-direction: column; gap: var(--space-md); }
+.brand-overlay-wrapper { 
+  padding: 5vh 0 120px 0; /* Changed bottom padding from 10vh to 120px to clear the buttons */
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space-md); 
+}
 
 .bauhaus-asset-grid {
   display: flex; flex-wrap: wrap; gap: 4rem 2rem; width: 100%; justify-content: center; align-items: center; 
@@ -591,7 +614,12 @@ footer { padding: var(--space-md) 0; border-top: 1px solid var(--grey-mid); back
 }
 
 /* B. Graphic Overlay (Strict No-Scroll Fit) */
-.graphic-overlay-wrapper { display: flex; flex-direction: column; height: 100vh; padding: 10vh 0 100px 0; }
+.graphic-overlay-wrapper { 
+  display: flex; 
+  flex-direction: column; 
+  min-height: 100%; /* Switched from 100vh to min-height for better dynamic fit */
+  padding: 10vh 0 120px 0; /* Increased bottom padding */
+}
 .graphic-overlay-wrapper .overlay-text-wrapper { flex-shrink: 0; margin-bottom: var(--space-md); padding: 0 var(--space-sm); }
 .graphic-overlay-wrapper .overlay-text-wrapper .huge-text { font-size: clamp(2rem, 5vw, 3rem); }
 .graphic-image-fit { flex: 1; min-height: 0; display: flex; justify-content: center; align-items: center; padding: 0 var(--space-sm); }
