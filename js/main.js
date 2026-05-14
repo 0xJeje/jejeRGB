@@ -1,4 +1,4 @@
-import { initGeometry } from './modules/geometry.js';
+import { initGeometry } from './modules/geometry.js'; 
 import { initAnimations, updateScramblePhrases } from './modules/animations.js';
 import { initCursor } from './modules/cursor.js';
 import { initSliders } from './modules/sliders.js';
