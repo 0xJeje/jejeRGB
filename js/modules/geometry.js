@@ -1,4 +1,4 @@
- export function initGeometry() {
+ export function initGeometry() { 
     const canvas = document.getElementById('geometry-canvas');
     const heroSection = document.getElementById('hero-slim');
     if (!canvas || !heroSection) return;
