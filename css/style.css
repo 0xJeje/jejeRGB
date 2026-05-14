@@ -556,8 +556,9 @@ footer { padding: var(--space-md) 0; border-top: 1px solid var(--grey-mid); back
   position: fixed; 
   top: 0; 
   left: 0; 
-  right: 0; 
-  bottom: 0; /* Fixes the mobile address bar issue */
+  width: 100%; 
+  height: 100vh; /* Fallback for very old browsers */
+  height: 100dvh; /* Fixes the mobile address bar issue */
   background: rgba(0,0,0,0.98); 
   z-index: var(--z-overlay); 
   display: none; 
