@@ -43,8 +43,18 @@ export function initCursor() {
     // BUG FIX: Use Event Delegation for dynamic/cloned elements
     const interactives = 'a, button, .trigger-overlay, input, textarea, select, .sarcastic-quote, .bauhaus-scroll-wrapper, .yt-card, .reel-card, .slide-card';
     
-    document.addEventListener('mouseover', (e) => {
-        if (e.target.closest(interactives)) isHovering = true;
+  document.addEventListener('mouseover', (e) => {
+        // 1. Check if we are hovering over an interactive element
+        const interactive = e.target.closest('a, button, .trigger-overlay, input, textarea, select, .sarcastic-quote, .bauhaus-item, .yt-card, .reel-card, .slide-card');
+        isHovering = !!interactive;
+
+        // 2. Anti-Camouflage: Check if we are over the accent-colored background
+        const overAccentBg = e.target.closest('.bg-accent');
+        if (overAccentBg) {
+            cursor.classList.add('on-accent-bg');
+        } else {
+            cursor.classList.remove('on-accent-bg');
+        }
     });
     
     document.addEventListener('mouseout', (e) => {
