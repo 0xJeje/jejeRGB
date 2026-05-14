@@ -173,6 +173,15 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; text-transform: uppercase; line-heigh
   will-change: transform, width, height;
 }
 .cursor-dot.hovered { width: 50px; height: 50px; background-color: #c5d92d; }
+/* Anti-Camouflage: Turns cursor white when over the accent background */
+.cursor-dot.on-accent-bg {
+  background-color: var(--white);
+}
+
+/* Keeps the expanded cursor white, with enough transparency to read the black text beneath */
+.cursor-dot.on-accent-bg.hovered {
+  background-color: var(--white);
+}
 
 .interactive-section { cursor: grab; }
 .interactive-section:active { cursor: grabbing; }
@@ -574,6 +583,7 @@ footer { padding: var(--space-md) 0; border-top: 1px solid var(--grey-mid); back
   -webkit-overflow-scrolling: touch; 
 }
 
+/* REPLACE YOUR EXISTING .overlay-nav-bar */
 .overlay-nav-bar {
   position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; z-index: 11000;
   background: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%); 
@@ -581,7 +591,6 @@ footer { padding: var(--space-md) 0; border-top: 1px solid var(--grey-mid); back
   padding: 4rem 0rem env(safe-area-inset-bottom) 0rem; 
   pointer-events: none;
 }
-
 .overlay-btn { pointer-events: auto; background: var(--black); color: var(--accent); border: 1px solid var(--accent); padding: 0.8rem 1.5rem; font-family: var(--font-mono); font-weight: 700; transition: all 0.2s ease; min-width: 120px; text-transform: uppercase;}
 .overlay-btn:hover { background: var(--accent); color: var(--black); }
 .overlay-close { background: var(--accent); color: var(--black); }
