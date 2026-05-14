@@ -1,4 +1,4 @@
-import { projectData } from './data.js';
+import { projectData } from './data.js'; 
 
 export function initOverlay() {
     const overlay = document.getElementById('project-overlay');
