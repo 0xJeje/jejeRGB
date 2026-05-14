@@ -1,4 +1,4 @@
-window.dragDistance = 0; 
+window.dragDistance = 0;  
 
 export function initSliders() {
     // ----------------------------------------
