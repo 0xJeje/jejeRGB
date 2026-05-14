@@ -1,4 +1,4 @@
-class TextScramble {
+ class TextScramble {
     constructor(el, syncEl = null) {
         this.el = el;
         this.syncEl = syncEl; 
