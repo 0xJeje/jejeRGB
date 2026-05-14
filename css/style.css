@@ -556,9 +556,8 @@ footer { padding: var(--space-md) 0; border-top: 1px solid var(--grey-mid); back
   position: fixed; 
   top: 0; 
   left: 0; 
-  width: 100%; 
-  height: 100vh; /* Fallback for very old browsers */
-  height: 100dvh; /* Fixes the mobile address bar issue */
+  right: 0; 
+  bottom: 0; /* Fixes the mobile address bar issue */
   background: rgba(0,0,0,0.98); 
   z-index: var(--z-overlay); 
   display: none; 
@@ -570,13 +569,18 @@ footer { padding: var(--space-md) 0; border-top: 1px solid var(--grey-mid); back
   flex: 1; 
   width: 100%; 
   overflow-y: auto; 
-  overscroll-behavior: contain; /* CRITICAL: Stops the background from scrolling */
-  -webkit-overflow-scrolling: touch; /* Ensures smooth momentum scrolling on iOS */
+  overscroll-behavior: none; /* Strictly stops scroll momentum from passing to the main page */
+  -webkit-overflow-scrolling: touch; 
 }
+
 .overlay-nav-bar {
   position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; z-index: 11000;
-  background: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%); padding: 4rem 0rem 0rem 0rem; pointer-events: none;
+  background: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%); 
+  /* Added env(safe-area-inset-bottom) to handle iPhones with the home bar at the bottom */
+  padding: 4rem 0rem env(safe-area-inset-bottom) 0rem; 
+  pointer-events: none;
 }
+
 .overlay-btn { pointer-events: auto; background: var(--black); color: var(--accent); border: 1px solid var(--accent); padding: 0.8rem 1.5rem; font-family: var(--font-mono); font-weight: 700; transition: all 0.2s ease; min-width: 120px; text-transform: uppercase;}
 .overlay-btn:hover { background: var(--accent); color: var(--black); }
 .overlay-close { background: var(--accent); color: var(--black); }
@@ -657,4 +661,21 @@ body.low-power-mode .glitch-text::before,
 body.low-power-mode .glitch-text::after {
   animation: none !important; /* Stops the text glitch hover effects */
   display: none !important;
+}
+
+/* =========================================
+   13. TOUCH DEVICE OVERRIDES
+========================================= */
+@media (hover: none) and (pointer: coarse) {
+  .cursor-dot {
+    display: none !important; /* Force hide custom cursor on touch devices */
+  }
+  
+  /* Prevent the real cursor from staying hidden if a tap triggers the JS */
+  body.hide-native-cursor,
+  body.hide-native-cursor a,
+  body.hide-native-cursor button,
+  body.hide-native-cursor .interactive-section {
+    cursor: auto !important; 
+  }
 }
