@@ -1,4 +1,4 @@
-export const projectData = {
+ export const projectData = {
     'brand-1': { 
         title: 'Allma ROAD', 
         tags: 'BRANDING / CORE_IDENTITY',
