@@ -223,7 +223,7 @@ section {
 nav { position: fixed; top: 0; width: 100%; z-index: var(--z-nav); padding: 1.5rem 0; transition: all 0.4s ease; }
 
 /* OPTIMIZED NAV: Solid background, NO blur */
-nav.scrolled { padding: 0.8rem 0; background: rgba(0, 0, 0, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+nav.scrolled { padding: 1.2rem 0 0.8rem; background: rgba(0, 0, 0, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
 .nav-inner { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
 .nav-logo {
@@ -680,8 +680,7 @@ body.low-power-mode .glitch-text::after {
 ========================================= */
 @media (max-width: 480px) {
     /* Shrink button padding and text */
-    .lang-toggle, .menu-trigger { 
-        padding: 0 6px; 
+    .lang-toggle, .menu-trigger {  
         font-size: 0.75rem; 
     }
     
