@@ -16,13 +16,9 @@ export function initSliders() {
     let brandStartX, brandScrollLeft;
     let isBrandVisible = false;
 
-    /* TOUCH SPECIFIC VARIABLES */
-    let touchStartX = 0;
-    let touchStartY = 0;
-
     function updateSlider() {
-        if (window.innerWidth < 768 && brandTrack) {
-            const currentSlides = brandTrack.querySelectorAll('.slide-card');
+        if (window.innerWidth < 768) {
+            const currentSlides = document.querySelectorAll('#brand-track .slide-card');
             currentSlides.forEach((slide, index) => {
                 slide.classList.remove('active');
                 if (index % originalSlidesCount === currentSlide) slide.classList.add('active');
@@ -37,6 +33,7 @@ export function initSliders() {
     }
 
     if (brandSection && brandTrack) {
+        // Obeserver to pause scroll when off-screen
         const brandObserver = new IntersectionObserver(entries => { isBrandVisible = entries[0].isIntersecting; });
         brandObserver.observe(brandSection);
 
@@ -44,6 +41,7 @@ export function initSliders() {
         brandTrack.innerHTML = brandTrack.innerHTML + brandTrack.innerHTML;
 
         const autoScrollBrand = () => {
+            // ONLY scroll if visible, wide enough, and not in low power mode
             if (window.innerWidth >= 768 && isBrandVisible && !brandIsDown && !window.isLowPowerMode) {
                 brandTrack.scrollLeft += 0.8;
                 if (brandTrack.scrollLeft >= brandTrack.scrollWidth / 2) brandTrack.scrollLeft = 0;
@@ -69,23 +67,9 @@ export function initSliders() {
 
         brandSection.addEventListener('mouseup', () => brandIsDown = false);
         brandSection.addEventListener('mouseleave', () => brandIsDown = false);
-        
-        brandSection.addEventListener('touchstart', (e) => {
-             touchStartX = e.touches[0].clientX;
-             touchStartY = e.touches[0].clientY;
-             window.dragDistance = 0; 
-        }, { passive: true });
-
-        brandSection.addEventListener('touchmove', (e) => {
-             const touchEndX = e.touches[0].clientX;
-             const touchEndY = e.touches[0].clientY;
-             const moveX = Math.abs(touchEndX - touchStartX);
-             const moveY = Math.abs(touchEndY - touchStartY);
-             window.dragDistance = Math.max(moveX, moveY); 
-        }, { passive: true });
     }
     window.addEventListener('resize', updateSlider);
-    if(brandTrack) updateSlider();
+    updateSlider();
 
 
     // ----------------------------------------
@@ -115,6 +99,7 @@ export function initSliders() {
         };
         autoScrollBauhaus();
 
+        // Bauhaus Drag Events
         bauhausSection.addEventListener('mousedown', (e) => {
             isBauhausDown = true; window.dragDistance = 0;
             bauhausStartX = e.pageX - bauhausSection.offsetLeft;
@@ -126,38 +111,46 @@ export function initSliders() {
             e.preventDefault();
             const move = (e.pageX - bauhausSection.offsetLeft) - bauhausStartX;
             window.dragDistance = Math.abs(move);
-            bauhausSlider.scrollLeft = bauhausScrollLeft - move;
+            bauhausSlider.scrollLeft = bauhausScrollLeft - move; 
         });
 
-        bauhausSection.addEventListener('mouseup', () => isBauhausDown = false);
-        bauhausSection.addEventListener('mouseleave', () => isBauhausDown = false);
-        
+        bauhausSection.addEventListener('mouseup', () => { isBauhausDown = false; });
+        bauhausSection.addEventListener('mouseleave', () => { isBauhausDown = false; });
+
+        // Touch logic for Bauhaus
         bauhausSection.addEventListener('touchstart', (e) => {
-             touchStartX = e.touches[0].clientX;
-             touchStartY = e.touches[0].clientY;
-             window.dragDistance = 0; 
+            isBauhausDown = true; window.dragDistance = 0;
+            bauhausStartX = e.touches[0].pageX - bauhausSection.offsetLeft;
+            bauhausScrollLeft = bauhausSlider.scrollLeft;
         }, { passive: true });
 
         bauhausSection.addEventListener('touchmove', (e) => {
-             const touchEndX = e.touches[0].clientX;
-             const touchEndY = e.touches[0].clientY;
-             const moveX = Math.abs(touchEndX - touchStartX);
-             const moveY = Math.abs(touchEndY - touchStartY);
-             window.dragDistance = Math.max(moveX, moveY); 
+            if (!isBauhausDown) return;
+            const move = (e.touches[0].pageX - bauhausSection.offsetLeft) - bauhausStartX;
+            window.dragDistance = Math.abs(move);
+            bauhausSlider.scrollLeft = bauhausScrollLeft - move;
         }, { passive: true });
+
+        bauhausSection.addEventListener('touchend', () => { isBauhausDown = false; });
     }
 
     // ----------------------------------------
-    // C. Video / Reels Slider (Restored)
+    // C. Mobile Reels Stack Logic (Unchanged but Optimized)
     // ----------------------------------------
-    const reelsGrid = document.querySelector('.reels-grid') || document.querySelector('.reels-container') || document.getElementById('video-social');
+    const reelsGrid = document.getElementById('reels-grid');
     const reelCards = document.querySelectorAll('.reel-card');
-    const reelNext = document.getElementById('reel-next');
     const reelPrev = document.getElementById('reel-prev');
-    let currentReelIndex = 0;
+    const reelNext = document.getElementById('reel-next');
 
-    if (reelCards.length > 0) {
+    if (reelsGrid && reelCards.length > 0) {
+        let currentReelIndex = 0;
+
         const updateReelStack = () => {
+            if (window.innerWidth >= 768) {
+                reelCards.forEach(card => { card.className = 'reel-card'; card.style.zIndex = ''; });
+                return;
+            }
+
             reelCards.forEach((card, index) => {
                 card.classList.remove('stack-active', 'stack-prev', 'stack-next');
                 if (index === currentReelIndex) card.classList.add('stack-active');
@@ -167,35 +160,19 @@ export function initSliders() {
         };
 
         if (reelNext && reelPrev) {
-            reelNext.addEventListener('click', () => { 
-                currentReelIndex = (currentReelIndex + 1) % reelCards.length; 
-                updateReelStack(); 
-            });
-            reelPrev.addEventListener('click', () => { 
-                currentReelIndex = (currentReelIndex - 1 + reelCards.length) % reelCards.length; 
-                updateReelStack(); 
-            });
+            reelNext.addEventListener('click', () => { currentReelIndex = (currentReelIndex + 1) % reelCards.length; updateReelStack(); });
+            reelPrev.addEventListener('click', () => { currentReelIndex = (currentReelIndex - 1 + reelCards.length) % reelCards.length; updateReelStack(); });
         }
 
-        let reelTouchStartX = 0;
-        if (reelsGrid) {
-            reelsGrid.addEventListener('touchstart', (e) => { 
-                reelTouchStartX = e.touches[0].clientX; 
-            }, { passive: true });
-            
-            reelsGrid.addEventListener('touchend', (e) => {
-                let touchEndX = e.changedTouches[0].clientX;
-                if (reelTouchStartX - touchEndX > 50) { 
-                    currentReelIndex = (currentReelIndex + 1) % reelCards.length; 
-                    updateReelStack(); 
-                } else if (touchEndX - reelTouchStartX > 50) { 
-                    currentReelIndex = (currentReelIndex - 1 + reelCards.length) % reelCards.length; 
-                    updateReelStack(); 
-                }
-            });
-        }
-        
-        // Initialize stack on load
+        let touchStartX = 0;
+        reelsGrid.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+        reelsGrid.addEventListener('touchend', (e) => {
+            let touchEndX = e.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 50) { currentReelIndex = (currentReelIndex + 1) % reelCards.length; updateReelStack(); } 
+            else if (touchEndX - touchStartX > 50) { currentReelIndex = (currentReelIndex - 1 + reelCards.length) % reelCards.length; updateReelStack(); }
+        });
+
         updateReelStack();
+        window.addEventListener('resize', updateReelStack);
     }
 }
