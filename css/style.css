@@ -69,7 +69,7 @@ body::after {
 }
 
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-track { background: var(--transparent); }
 ::-webkit-scrollbar-thumb { background: var(--grey-mid); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
@@ -223,7 +223,7 @@ section {
 nav { position: fixed; top: 0; width: 100%; z-index: var(--z-nav); padding: 1.5rem 0; transition: all 0.4s ease; }
 
 /* OPTIMIZED NAV: Solid background, NO blur */
-nav.scrolled { padding: 1.2rem 0 0.8rem; background: rgba(0, 0, 0, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+nav.scrolled { padding: 0.8rem 0; background: rgba(0, 0, 0, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
 .nav-inner { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
 .nav-logo {
@@ -527,6 +527,19 @@ nav.scrolled { padding: 1.2rem 0 0.8rem; background: rgba(0, 0, 0, 0.98); border
 
 .contact-form-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
 @media (min-width: 992px) { .contact-form-grid { grid-template-columns: 1fr 1fr; } }
+.link-black { color: var(--black); text-decoration: none; border-bottom: 2px solid transparent; width: fit-content; transition: border-color 0.3s ease; }
+.link-black:hover { border-bottom-color: var(--black); }
+
+.contact-form { display: grid; grid-template-columns: 1fr; gap: 1.5rem 1rem; }
+@media (min-width: 768px) { .contact-form { grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; } .full-width { grid-column: 1 / -1; } }
+.contact-form input, .contact-form textarea, .contact-form select {
+  background: transparent; border: none; border-bottom: 2px solid rgba(0,0,0,0.3); color: var(--black); padding: var(--space-sm) 0; font-size: 1.2rem; outline: none; transition: border-color 0.3s;
+}
+.contact-form select { appearance: none; border-radius: 0; }
+.contact-form input::placeholder, .contact-form textarea::placeholder { color: rgba(0,0,0,0.5); }
+.contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus { border-bottom-color: var(--black); }
+.submit-btn { background: var(--black); color: var(--accent); border: none; padding: var(--space-md); font-weight: 700; text-transform: uppercase; margin-top: 0.5rem; transition: transform 0.2s; }
+.submit-btn:hover { transform: translateY(-3px); }
 
 .contact-btn {
   display: block; border: 1px solid var(--black); padding: 1.25rem; text-decoration: none; color: var(--black); transition: all 0.3s ease; background: transparent;
@@ -540,7 +553,9 @@ nav.scrolled { padding: 1.2rem 0 0.8rem; background: rgba(0, 0, 0, 0.98); border
 .check-item { transition: opacity 0.4s ease, transform 0.4s ease; }
 .check-item.revealed { opacity: 1 !important; transform: translateX(0) !important; }
 
-/* Note: The old footer and .contact-form styles have been entirely removed */
+/* Footer */
+footer { padding: var(--space-md) 0; border-top: 1px solid var(--grey-mid); background: var(--black); }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; opacity: 0.5; flex-wrap: wrap; gap: 1rem; }
 
 /* =========================================
    10. OVERLAYS (BRANDING & GRAPHIC)
@@ -675,33 +690,8 @@ body.low-power-mode .glitch-text::after {
   }
 }
 
-/* =========================================
-   MOBILE HEADER OVERFLOW FIX
-========================================= */
-@media (max-width: 480px) {
-    /* Shrink button padding and text */
-    .lang-toggle, .menu-trigger {  
-        font-size: 0.75rem; 
-    }
-    
-    /* Pull the brackets tighter around "MENU" */
-    .menu-trigger::before { margin-right: 3px; }
-    .menu-trigger::after { margin-left: 3px; }
-    
-    /* Reduce the gap between the 3 buttons */
-    .nav-actions { 
-        gap: 0.25rem; 
-    }
-    
-    /* Prevent the hidden logo from forcing the layout too wide */
-    .nav-inner {
-        gap: 0.5rem;
-    }
-    .nav-logo {
-        min-width: 0;
-    }
-    #nav-scramble {
-        width: 110px;
-        max-width: 35vw;
-    }
+/* Prevent header height jump on scroll */
+@media (max-width: 768px) {
+    nav { padding: 1rem 0 !important; }
+    nav.scrolled { padding: 1rem 0 !important; }
 }
