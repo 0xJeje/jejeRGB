@@ -223,7 +223,7 @@ section {
 /* Update this block around line 125 */
 nav { 
   position: fixed; top: 0; width: 100%; z-index: var(--z-nav); padding: 1.5rem 0; 
-  transition: background-color 0.4s ease, border-color 0.4s ease; /* Changed from 'all' */
+  transition: background-color 0.4s ease, border-color 0.4s ease; 
 }
 
 /* OPTIMIZED NAV: Solid background, NO blur */
