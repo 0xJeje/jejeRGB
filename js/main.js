@@ -1,4 +1,4 @@
-import { initGeometry } from './modules/geometry.js'; 
+import { initGeometry } from './modules/geometry.js';
 import { initAnimations, updateScramblePhrases } from './modules/animations.js';
 import { initCursor } from './modules/cursor.js';
 import { initSliders } from './modules/sliders.js';
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { passive: true });
 
-    // 4. Power Mode Toggle Logic (NEW)
+    // 4. Power Mode Toggle Logic
     const powerToggle = document.getElementById('toggle-power');
     powerToggle.addEventListener('click', () => {
         window.isLowPowerMode = !window.isLowPowerMode;
@@ -93,9 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateFormTranslations(lang) {
         document.querySelectorAll('[data-ro][data-en]').forEach(el => {
             const translatedText = el.getAttribute(`data-${lang}`);
+            
+            // NEW: Accessibility Attribute Synchronization
+            if (el.hasAttribute('aria-label')) el.setAttribute('aria-label', translatedText);
+            if (el.hasAttribute('title')) el.setAttribute('title', translatedText);
+
+            // Structure assignments
             if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                 el.placeholder = translatedText;
             } else if (el.tagName === 'OPTION') {
+                el.innerText = translatedText;
+            } else if (el.childNodes.length > 0 && el.childNodes[0].nodeType === 3) {
+                // Ensure we don't accidentally overwrite child SVGs or nested spans if targeting parent buttons
                 el.innerText = translatedText;
             } else {
                 el.innerText = translatedText;
@@ -170,4 +179,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.3 });
         checkObserver.observe(checksContainer);
     }
+
+    // 9. Anti-Spam Contact Obfuscation
+    // Decodes Base64 strings to protect against raw HTML scrapers
+    const secureLinks = document.querySelectorAll('.secure-link');
+    const secureTexts = document.querySelectorAll('.secure-text');
+
+    // Reveal the text visually on load
+    secureTexts.forEach(span => {
+        try {
+            const decoded = atob(span.getAttribute('data-sec'));
+            span.innerText = `${decoded} ↗`;
+        } catch(e) {
+            console.error("Decoder error", e);
+        }
+    });
+
+    // Handle the clicks dynamically
+    secureLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            try {
+                const decoded = atob(this.getAttribute('data-sec'));
+                const protocol = this.getAttribute('data-protocol');
+                window.location.href = protocol + decoded;
+            } catch(e) {
+                console.error("Link redirect error", e);
+            }
+        });
+    });
 });
