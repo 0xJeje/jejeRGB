@@ -84,32 +84,22 @@ export function initOverlay() {
         }
     }
 
-    // NEW: Global touchmove intercept for mobile Safari background scroll lock
-    overlay.addEventListener('touchmove', (e) => {
-        const isScrollArea = e.target.closest('#overlay-scroll-area');
-        
-        // If they are touching the background overlay, block it entirely
-        if (!isScrollArea) {
-            e.preventDefault();
-        } else {
-            // Block scrolling if the inner content is smaller than the container (e.g., graphics)
-            if (scrollArea.scrollHeight <= scrollArea.clientHeight) {
-                e.preventDefault();
-            }
-        }
-    }, { passive: false });
-
     document.body.addEventListener('click', (e) => {
         const trigger = e.target.closest('.trigger-overlay');
         if (!trigger) return;
 
         if (e.target.tagName === 'A' || (e.target.closest('a') && !e.target.classList.contains('trigger-overlay'))) return;
 
-        // NEW: Time-based Drag Drift Detection
+// NEW: Time-based Drag Drift Detection
         const dragDuration = Date.now() - (window.dragStartTime || 0);
-        // If mouse moved slightly, but the user held it down for more than 150ms, it is a drag.
-        // If it was extremely fast (<150ms) it's likely a messy click on a sensitive trackpad/mouse.
-        if (window.dragDistance > 5 && dragDuration > 150) return; 
+        
+        if (window.dragDistance > 5 && dragDuration > 150) {
+            window.dragDistance = 0; // Reset so future clicks don't get permanently locked
+            return; 
+        }
+        
+        // Reset global drag distance on successful click to keep state clean
+        window.dragDistance = 0;
 
         const id = trigger.getAttribute('data-project');
         renderOverlayContent(id);
