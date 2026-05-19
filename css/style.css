@@ -220,7 +220,11 @@ section {
 }
 
 /* Header / Nav */
-nav { position: fixed; top: 0; width: 100%; z-index: var(--z-nav); padding: 1.5rem 0; transition: all 0.4s ease; }
+/* Update this block around line 125 */
+nav { 
+  position: fixed; top: 0; width: 100%; z-index: var(--z-nav); padding: 1.5rem 0; 
+  transition: background-color 0.4s ease, border-color 0.4s ease; /* Changed from 'all' */
+}
 
 /* OPTIMIZED NAV: Solid background, NO blur */
 nav.scrolled {  background: rgba(0, 0, 0, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
@@ -391,6 +395,8 @@ nav.scrolled {  background: rgba(0, 0, 0, 0.98); border-bottom: 1px solid rgba(2
 .bauhaus-scroll-wrapper {
   width: 100%; overflow-x: auto; scrollbar-width: none; background: transparent;
   margin-top: 1rem; padding: var(--space-sm) 0 var(--space-md) 0; position: relative;
+  -webkit-overflow-scrolling: touch; /* Forces native smooth scroll */
+  scroll-behavior: auto; /* Prevents JS animation conflicts */
 }
 .bauhaus-scroll-wrapper::-webkit-scrollbar { display: none; }
 
@@ -702,8 +708,8 @@ body.low-power-mode .glitch-text::after {
 
 /* 2. Fix the Nav Bar jumping to the extreme top edge */
 #main-nav {
-    /* Ensure the padding respects the iOS Notch / Android Status Bar */
-    padding-top: max(1rem, env(safe-area-inset-top)) !important;
+    padding-top: max(1.5rem, env(safe-area-inset-top)) !important;
+    padding-bottom: 1.5rem !important; 
 }
 
 /* 3. Fix the Overlay Bottom Gap & Button Placement */
