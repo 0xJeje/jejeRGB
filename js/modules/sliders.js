@@ -87,8 +87,13 @@ export function initSliders() {
         });
     }
     
-    window.addEventListener('resize', updateSlider);
-    updateSlider();
+let brandLastWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+        if (window.innerWidth !== brandLastWidth) {
+            brandLastWidth = window.innerWidth;
+            updateSlider();
+        }
+    });
 
 
     // ----------------------------------------
@@ -227,7 +232,12 @@ bauhausSection.addEventListener('touchmove', (e) => {
             else if (touchEndX - touchStartX > 50) { currentReelIndex = (currentReelIndex - 1 + reelCards.length) % reelCards.length; updateReelStack(); }
         });
 
-        updateReelStack();
-        window.addEventListener('resize', updateReelStack);
+let reelsLastWidth = window.innerWidth;
+        window.addEventListener('resize', () => {
+            if (window.innerWidth !== reelsLastWidth) {
+                reelsLastWidth = window.innerWidth;
+                updateReelStack();
+            }
+        });
     }
 }
