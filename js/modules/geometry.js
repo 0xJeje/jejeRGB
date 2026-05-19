@@ -1,4 +1,4 @@
- export function initGeometry() { 
+export function initGeometry() {
     const canvas = document.getElementById('geometry-canvas');
     const heroSection = document.getElementById('hero-slim');
     if (!canvas || !heroSection) return;
@@ -120,7 +120,13 @@
     }, { threshold: 0 });
 
     observer.observe(heroSection);
-    window.addEventListener('resize', resize); 
+  let geoLastWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+        if (window.innerWidth !== geoLastWidth) {
+            geoLastWidth = window.innerWidth;
+            resize();
+        }
+    });
     initCanvas();
     animate(performance.now());
 }
