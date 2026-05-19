@@ -156,19 +156,18 @@ export function initSliders() {
         });
 
         // Touch logic for Bauhaus
-        bauhausSection.addEventListener('touchstart', (e) => {
-            isBauhausDown = true; 
+bauhausSection.addEventListener('touchstart', (e) => {
+            isBauhausDown = true; // Pauses the auto-scroll
             window.dragDistance = 0;
             window.dragStartTime = Date.now();
-            bauhausStartX = e.touches[0].pageX - bauhausSection.offsetLeft;
-            bauhausScrollLeft = bauhausSlider.scrollLeft;
+            bauhausStartX = e.touches[0].pageX;
         }, { passive: true });
 
-        bauhausSection.addEventListener('touchmove', (e) => {
+bauhausSection.addEventListener('touchmove', (e) => {
             if (!isBauhausDown) return;
-            const move = (e.touches[0].pageX - bauhausSection.offsetLeft) - bauhausStartX;
+            // Native CSS handles the scrolling; we only track distance to prevent accidental clicks
+            const move = e.touches[0].pageX - bauhausStartX;
             window.dragDistance = Math.abs(move);
-            bauhausSlider.scrollLeft = bauhausScrollLeft - move;
         }, { passive: true });
 
         bauhausSection.addEventListener('touchend', () => { 
