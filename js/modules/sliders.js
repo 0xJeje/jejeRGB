@@ -219,11 +219,13 @@ bauhausSection.addEventListener('touchmove', (e) => {
             });
         };
 
+// Initialize the stack layout immediately on load
+        updateReelStack();
+
         if (reelNext && reelPrev) {
             reelNext.addEventListener('click', () => { currentReelIndex = (currentReelIndex + 1) % reelCards.length; updateReelStack(); });
             reelPrev.addEventListener('click', () => { currentReelIndex = (currentReelIndex - 1 + reelCards.length) % reelCards.length; updateReelStack(); });
         }
-
         let touchStartX = 0;
         reelsGrid.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
         reelsGrid.addEventListener('touchend', (e) => {
