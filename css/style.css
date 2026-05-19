@@ -220,11 +220,7 @@ section {
 }
 
 /* Header / Nav */
-/* Update this block around line 125 */
-nav { 
-  position: fixed; top: 0; width: 100%; z-index: var(--z-nav); padding: 1.5rem 0; 
-  transition: background-color 0.4s ease, border-color 0.4s ease; 
-}
+nav { position: fixed; top: 0; width: 100%; z-index: var(--z-nav); padding: 1.5rem 0; transition: all 0.4s ease; }
 
 /* OPTIMIZED NAV: Solid background, NO blur */
 nav.scrolled {  background: rgba(0, 0, 0, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
@@ -395,8 +391,6 @@ nav.scrolled {  background: rgba(0, 0, 0, 0.98); border-bottom: 1px solid rgba(2
 .bauhaus-scroll-wrapper {
   width: 100%; overflow-x: auto; scrollbar-width: none; background: transparent;
   margin-top: 1rem; padding: var(--space-sm) 0 var(--space-md) 0; position: relative;
-  -webkit-overflow-scrolling: touch; /* Forces native smooth scroll */
-  scroll-behavior: auto; /* Prevents JS animation conflicts */
 }
 .bauhaus-scroll-wrapper::-webkit-scrollbar { display: none; }
 
@@ -634,12 +628,18 @@ footer { padding: var(--space-md) 0; border-top: 1px solid var(--grey-mid); back
 }
 
 /* B. Graphic Overlay (Strict No-Scroll Fit) */
+.overlay-scroll-area .container,
+.overlay-scroll-area .overlay-content {
+    height: 100%;
+}
+
 .graphic-overlay-wrapper { 
   display: flex; 
   flex-direction: column; 
-  min-height: 100%; /* Switched from 100vh to min-height for better dynamic fit */
-  padding: 10vh 0 120px 0; /* Increased bottom padding */
+  height: 100%; /* Changed from min-height to strict height */
+  padding: 60px 0 120px 0; /* Swapped vh to px for in-app browser stability */
 }
+
 .graphic-overlay-wrapper .overlay-text-wrapper { flex-shrink: 0; margin-bottom: var(--space-md); padding: 0 var(--space-sm); }
 .graphic-overlay-wrapper .overlay-text-wrapper .huge-text { font-size: clamp(2rem, 5vw, 3rem); }
 .graphic-image-fit { flex: 1; min-height: 0; display: flex; justify-content: center; align-items: center; padding: 0 var(--space-sm); }
@@ -708,8 +708,8 @@ body.low-power-mode .glitch-text::after {
 
 /* 2. Fix the Nav Bar jumping to the extreme top edge */
 #main-nav {
-    padding-top: max(1.5rem, env(safe-area-inset-top)) !important;
-    padding-bottom: 1.5rem !important; 
+    /* Ensure the padding respects the iOS Notch / Android Status Bar */
+    padding-top: max(1rem, env(safe-area-inset-top)) !important;
 }
 
 /* 3. Fix the Overlay Bottom Gap & Button Placement */
