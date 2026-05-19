@@ -1,4 +1,5 @@
 window.dragDistance = 0; 
+window.dragStartTime = 0; // NEW: Track interaction duration
 
 export function initSliders() {
     // ----------------------------------------
@@ -15,6 +16,7 @@ export function initSliders() {
     let brandIsDown = false;
     let brandStartX, brandScrollLeft;
     let isBrandVisible = false;
+    let brandAnimationId = null; // NEW: Animation frame reference
 
     function updateSlider() {
         if (window.innerWidth < 768) {
@@ -33,26 +35,35 @@ export function initSliders() {
     }
 
     if (brandSection && brandTrack) {
-        // Obeserver to pause scroll when off-screen
-        const brandObserver = new IntersectionObserver(entries => { isBrandVisible = entries[0].isIntersecting; });
-        brandObserver.observe(brandSection);
-
         brandTrack.addEventListener('dragstart', (e) => e.preventDefault());
         brandTrack.innerHTML = brandTrack.innerHTML + brandTrack.innerHTML;
 
+        // NEW: Refactored engine to stop when conditions fail
         const autoScrollBrand = () => {
-            // ONLY scroll if visible, wide enough, and not in low power mode
             if (window.innerWidth >= 768 && isBrandVisible && !brandIsDown && !window.isLowPowerMode) {
                 brandTrack.scrollLeft += 0.8;
                 if (brandTrack.scrollLeft >= brandTrack.scrollWidth / 2) brandTrack.scrollLeft = 0;
+                brandAnimationId = requestAnimationFrame(autoScrollBrand);
+            } else {
+                brandAnimationId = null; 
             }
-            requestAnimationFrame(autoScrollBrand);
         };
-        autoScrollBrand();
+
+        const startBrandScroll = () => {
+            if (!brandAnimationId) autoScrollBrand();
+        };
+
+        const brandObserver = new IntersectionObserver(entries => { 
+            isBrandVisible = entries[0].isIntersecting; 
+            if (isBrandVisible) startBrandScroll(); // Restart on reveal
+        });
+        brandObserver.observe(brandSection);
 
         brandSection.addEventListener('mousedown', (e) => {
             if (window.innerWidth < 768) return;
-            brandIsDown = true; window.dragDistance = 0;
+            brandIsDown = true; 
+            window.dragDistance = 0;
+            window.dragStartTime = Date.now();
             brandStartX = e.pageX - brandSection.offsetLeft;
             brandScrollLeft = brandTrack.scrollLeft;
         });
@@ -65,9 +76,17 @@ export function initSliders() {
             brandTrack.scrollLeft = brandScrollLeft - move;
         });
 
-        brandSection.addEventListener('mouseup', () => brandIsDown = false);
-        brandSection.addEventListener('mouseleave', () => brandIsDown = false);
+        brandSection.addEventListener('mouseup', () => { 
+            brandIsDown = false; 
+            startBrandScroll(); 
+        });
+        
+        brandSection.addEventListener('mouseleave', () => { 
+            brandIsDown = false; 
+            startBrandScroll(); 
+        });
     }
+    
     window.addEventListener('resize', updateSlider);
     updateSlider();
 
@@ -82,26 +101,38 @@ export function initSliders() {
     let isBauhausDown = false;
     let bauhausStartX, bauhausScrollLeft;
     let isBauhausVisible = false;
+    let bauhausAnimationId = null; // NEW: Animation frame reference
 
     if (bauhausSection && bauhausSlider && bauhausGrid) {
-        const bauhausObserver = new IntersectionObserver(entries => { isBauhausVisible = entries[0].isIntersecting; });
-        bauhausObserver.observe(bauhausSection);
-
         bauhausSlider.addEventListener('dragstart', (e) => e.preventDefault());
         bauhausGrid.innerHTML = bauhausGrid.innerHTML + bauhausGrid.innerHTML;
 
+        // NEW: Refactored engine
         const autoScrollBauhaus = () => {
             if (!isBauhausDown && isBauhausVisible && !window.isLowPowerMode) {
                 bauhausSlider.scrollLeft += 1;
                 if (bauhausSlider.scrollLeft >= bauhausGrid.scrollWidth / 2) bauhausSlider.scrollLeft = 0;
+                bauhausAnimationId = requestAnimationFrame(autoScrollBauhaus);
+            } else {
+                bauhausAnimationId = null;
             }
-            requestAnimationFrame(autoScrollBauhaus);
         };
-        autoScrollBauhaus();
+
+        const startBauhausScroll = () => {
+            if (!bauhausAnimationId) autoScrollBauhaus();
+        };
+
+        const bauhausObserver = new IntersectionObserver(entries => { 
+            isBauhausVisible = entries[0].isIntersecting; 
+            if (isBauhausVisible) startBauhausScroll();
+        });
+        bauhausObserver.observe(bauhausSection);
 
         // Bauhaus Drag Events
         bauhausSection.addEventListener('mousedown', (e) => {
-            isBauhausDown = true; window.dragDistance = 0;
+            isBauhausDown = true; 
+            window.dragDistance = 0;
+            window.dragStartTime = Date.now();
             bauhausStartX = e.pageX - bauhausSection.offsetLeft;
             bauhausScrollLeft = bauhausSlider.scrollLeft;
         });
@@ -114,12 +145,21 @@ export function initSliders() {
             bauhausSlider.scrollLeft = bauhausScrollLeft - move; 
         });
 
-        bauhausSection.addEventListener('mouseup', () => { isBauhausDown = false; });
-        bauhausSection.addEventListener('mouseleave', () => { isBauhausDown = false; });
+        bauhausSection.addEventListener('mouseup', () => { 
+            isBauhausDown = false; 
+            startBauhausScroll(); 
+        });
+        
+        bauhausSection.addEventListener('mouseleave', () => { 
+            isBauhausDown = false; 
+            startBauhausScroll(); 
+        });
 
         // Touch logic for Bauhaus
         bauhausSection.addEventListener('touchstart', (e) => {
-            isBauhausDown = true; window.dragDistance = 0;
+            isBauhausDown = true; 
+            window.dragDistance = 0;
+            window.dragStartTime = Date.now();
             bauhausStartX = e.touches[0].pageX - bauhausSection.offsetLeft;
             bauhausScrollLeft = bauhausSlider.scrollLeft;
         }, { passive: true });
@@ -131,11 +171,27 @@ export function initSliders() {
             bauhausSlider.scrollLeft = bauhausScrollLeft - move;
         }, { passive: true });
 
-        bauhausSection.addEventListener('touchend', () => { isBauhausDown = false; });
+        bauhausSection.addEventListener('touchend', () => { 
+            isBauhausDown = false; 
+            startBauhausScroll(); 
+        });
     }
 
+    // NEW: Global Power State Re-initialization
+    window.addEventListener('powerModeChanged', (e) => {
+        if (!e.detail.isLowPower) {
+            if (isBrandVisible && brandSection) {
+                // Kickstart if it stopped
+                if (window.innerWidth >= 768 && !brandAnimationId) autoScrollBrand(); 
+            }
+            if (isBauhausVisible && bauhausSection) {
+                if (!bauhausAnimationId) autoScrollBauhaus();
+            }
+        }
+    });
+
     // ----------------------------------------
-    // C. Mobile Reels Stack Logic (Unchanged but Optimized)
+    // C. Mobile Reels Stack Logic (Unchanged)
     // ----------------------------------------
     const reelsGrid = document.getElementById('reels-grid');
     const reelCards = document.querySelectorAll('.reel-card');
