@@ -14,7 +14,8 @@ export function initHeroTiles() {
   let tiles = [];
   let animationId = 0;
   let isVisible = true;
-  let isTouch = false;
+  let isTouch =
+    'ontouchstart' in window || navigator.maxTouchPoints > 0;
   let isPointerActive = false;
 
   let targetX = 0;
@@ -22,6 +23,8 @@ export function initHeroTiles() {
   let smoothX = 0;
   let smoothY = 0;
   let scrollInfluence = 0;
+  let scrollPauseTimer = 0;
+  let isTouchScrolling = false;
 
   const POINTER_LERP = 0.14;
   const INFLUENCE_LERP = 0.18;
@@ -142,9 +145,9 @@ export function initHeroTiles() {
       this.rotation += (this.targetRotation - this.rotation) * INFLUENCE_LERP;
     }
 
-    draw(context) {
-      const { r, g, b } = accentRgb();
-      const surf = surfaceRgb();
+    draw(context, colors) {
+      const { r, g, b } = colors.accent;
+      const surf = colors.surface;
       const pad = 1.5;
       const size = tileSize - pad * 2;
       const scale = 1 + this.highlight * 0.1;
@@ -205,6 +208,10 @@ export function initHeroTiles() {
 
   function animate() {
     if (!isVisible || window.isLowPowerMode) return;
+    if (isTouch && isTouchScrolling) {
+      animationId = requestAnimationFrame(animate);
+      return;
+    }
 
     smoothX += (targetX - smoothX) * POINTER_LERP;
     smoothY += (targetY - smoothY) * POINTER_LERP;
@@ -213,11 +220,12 @@ export function initHeroTiles() {
     const radius = influenceRadius() * strength;
     const px = smoothX;
     const py = smoothY;
+    const colors = { accent: accentRgb(), surface: surfaceRgb() };
 
     ctx.clearRect(0, 0, width, height);
 
     if (reducedMotion) {
-      tiles.forEach((tile) => tile.draw(ctx));
+      tiles.forEach((tile) => tile.draw(ctx, colors));
       animationId = requestAnimationFrame(animate);
       return;
     }
@@ -232,7 +240,7 @@ export function initHeroTiles() {
         tile.targetRotation = 0;
       }
       tile.tick();
-      tile.draw(ctx);
+      tile.draw(ctx, colors);
     });
 
     animationId = requestAnimationFrame(animate);
@@ -259,53 +267,29 @@ export function initHeroTiles() {
     { passive: true }
   );
 
-  // Mobile: flat at load; short tap reveals displacement; scroll fades it in behind hero copy.
-  let heroTouchStart = null;
-
-  heroSection.addEventListener(
-    'touchstart',
-    (e) => {
-      if (!isTouch) return;
-      const touch = e.touches[0];
-      if (touch) {
-        heroTouchStart = { x: touch.clientX, y: touch.clientY, time: Date.now() };
-      }
-    },
-    { passive: true }
-  );
-
-  heroSection.addEventListener(
-    'touchend',
-    (e) => {
-      if (!isTouch || !heroTouchStart) return;
-      const touch = e.changedTouches[0];
-      const dx = touch.clientX - heroTouchStart.x;
-      const dy = touch.clientY - heroTouchStart.y;
-      const isTap =
-        Math.hypot(dx, dy) < 10 && Date.now() - heroTouchStart.time < 400;
-
-      if (isTap) {
-        setPointer(touch.clientX, touch.clientY);
-        setTimeout(() => {
-          isPointerActive = false;
-          updateScrollInfluence();
-        }, 200);
-      } else {
-        isPointerActive = false;
-        updateScrollInfluence();
-      }
-      heroTouchStart = null;
-    },
-    { passive: true }
-  );
+  // Mobile: scroll-driven influence only — touch handlers fight native scrolling.
+  function markTouchScrolling() {
+    if (!isTouch) return;
+    isTouchScrolling = true;
+    window.clearTimeout(scrollPauseTimer);
+    scrollPauseTimer = window.setTimeout(() => {
+      isTouchScrolling = false;
+      updateScrollInfluence();
+    }, 120);
+  }
 
   window.addEventListener(
     'scroll',
     () => {
+      markTouchScrolling();
       updateScrollInfluence();
     },
     { passive: true }
   );
+
+  if (isTouch) {
+    window.addEventListener('touchmove', markTouchScrolling, { passive: true });
+  }
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -331,8 +315,6 @@ export function initHeroTiles() {
     }
   });
 
-  isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  resize();
   if (isTouch) {
     scrollInfluence = 0;
     isPointerActive = false;
