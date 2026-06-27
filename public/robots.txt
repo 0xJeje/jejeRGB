@@ -15,4 +15,7 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
+# AI discovery (AEO)
+# https://jeje.ro/llms.txt
+
 Sitemap: https://jeje.ro/sitemap-index.xml

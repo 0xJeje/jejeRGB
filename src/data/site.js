@@ -15,9 +15,9 @@ export const SITE = {
   countryCode: 'RO',
   geo: { lat: 45.41, lng: 23.36 }, // Valea Jiului approx.
   sameAs: [
-    'https://www.instagram.com/',
-    'https://www.tiktok.com/',
-    'https://www.youtube.com/',
+    'https://www.instagram.com/jeje.rgb',
+    'https://www.tiktok.com/@jeje.rgb',
+    'https://www.facebook.com/jeje537',
   ],
   services: [
     'Branding',
@@ -39,10 +39,95 @@ export const SEO = {
   descriptionEn:
     'Advertising & marketing studio in Valea Jiului, Hunedoara, Romania. Branding, graphic design, web development, video editing, ads and digital marketing. 4M+ views generated.',
   keywords:
-    'marketing, branding, reclame, website, web dev, editare video, agenție de publicitate, agenție de marketing, agenție de producție publicitară, agenție de digital marketing, designer grafic, video editor, Valea Jiului, Hunedoara, România',
+    'marketing, branding, reclame, website, web dev, editare video, agenție de publicitate, agenție de marketing, agenție de producție publicitară, agenție de digital marketing, designer grafic, video editor, logo design, identitate vizuală, social media, Hunedoara, Valea Jiului, Petroșani, Vulcan, Lupeni, Uricani, Aninoasa, România',
+  ogImageAlt:
+    'JEJE.RBG — agenție multimedia de branding, web development, editare video și marketing din Valea Jiului, Hunedoara',
   // 1200x630 OG image generated on the fly by Cloudinary from an existing asset.
   ogImage:
-    'https://res.cloudinary.com/dphdjjfvr/image/upload/c_fill,g_auto,w_1200,h_630,f_jpg,q_auto/v1778599992/social-media-post_dqdfg1.jpg',
+    'https://res.cloudinary.com/dphdjjfvr/image/upload/v1782541753/favicon_dxabwv.png',
+};
+
+// Focused landing pages — same portfolio sections, unique head/meta for search intent.
+export const SERVICE_PAGES = [
+  {
+    slug: 'branding',
+    section: 'branding',
+    title:
+      'Branding & Logo Design Valea Jiului, Hunedoara | JEJE.RBG',
+    description:
+      'Branding, identitate vizuală și design logo pentru afaceri din Valea Jiului, Hunedoara și România. Portofoliu Allma Road, Spiral Tribe, Dreea și altele.',
+    keywords:
+      'branding, logo, identitate vizuală, design logo, brand identity, agenție branding, Valea Jiului, Hunedoara, Petroșani, România',
+    schemaName: 'Branding și identitate vizuală',
+    schemaDescription:
+      'Servicii de branding, logo design și identitate vizuală pentru companii din Valea Jiului, județul Hunedoara și la nivel național în România.',
+  },
+  {
+    slug: 'design-grafic',
+    section: 'graphic-design',
+    title:
+      'Design Grafic & Reclame — Agenție Creativă Valea Jiului | JEJE.RBG',
+    description:
+      'Designer grafic pentru postere, coperți, materiale promoționale și reclame. Producție publicitară din Valea Jiului pentru clienți din toată România.',
+    keywords:
+      'design grafic, designer grafic, reclame, materiale promoționale, producție publicitară, afișe, cover art, Valea Jiului, Hunedoara, România',
+    schemaName: 'Design grafic și reclame',
+    schemaDescription:
+      'Design grafic, materiale promoționale și reclame pentru social media, evenimente și campanii publicitare în Valea Jiului și România.',
+  },
+  {
+    slug: 'editare-video',
+    section: 'video-social',
+    title:
+      'Editare Video & Social Media — Valea Jiului, România | JEJE.RBG',
+    description:
+      'Video editor și strateg social media: conținut short-form și long-form cu milioane de vizualizări. Editare video profesională din Valea Jiului.',
+    keywords:
+      'editare video, video editor, social media, TikTok, Instagram Reels, YouTube, conținut video, Valea Jiului, Hunedoara, România',
+    schemaName: 'Editare video și social media',
+    schemaDescription:
+      'Editare video profesională, direcție de conținut și strategie social media pentru branduri din Valea Jiului și România.',
+  },
+  {
+    slug: 'web-development',
+    section: 'web-dev',
+    title:
+      'Dezvoltare Website & Web Dev SEO — Valea Jiului | JEJE.RBG',
+    description:
+      'Website-uri rapide, optimizate SEO și mobile-first. Dezvoltare web din Valea Jiului — spiraltribe.ro, dreea.art și proiecte custom.',
+    keywords:
+      'web development, dezvoltare website, creare site, site web, landing page, SEO, web dev, Valea Jiului, Hunedoara, România',
+    schemaName: 'Dezvoltare website',
+    schemaDescription:
+      'Dezvoltare de website-uri rapide, optimizate SEO și adaptate mobil, pentru afaceri din Valea Jiului, Hunedoara și România.',
+  },
+  {
+    slug: 'marketing-digital',
+    section: 'servicii',
+    title:
+      'Marketing Digital & Agenție de Publicitate — Valea Jiului | JEJE.RBG',
+    description:
+      'Agenție de marketing digital și publicitate din Valea Jiului. Campanii, reclame, branding, web și video — un singur partener multimedia.',
+    keywords:
+      'marketing digital, agenție de publicitate, agenție de marketing, campanii publicitare, digital marketing, Valea Jiului, Hunedoara, România',
+    schemaName: 'Marketing digital și publicitate',
+    schemaDescription:
+      'Servicii complete de marketing digital, campanii publicitare și prezență online pentru afaceri din Valea Jiului și România.',
+  },
+];
+
+export const LOCAL_LANDING = {
+  slug: 'agentie-publicitate-valea-jiului',
+  title:
+    'Agenție de Publicitate & Marketing Valea Jiului, Hunedoara | JEJE.RBG',
+  description:
+    'Agenție multimedia de publicitate și marketing din Valea Jiului, județul Hunedoara. Branding, logo, web dev, editare video, reclame — servicii pentru România.',
+  keywords:
+    'agenție de publicitate, agenție de marketing, agenție multimedia, Valea Jiului, Hunedoara, Petroșani, Vulcan, Lupeni, branding, web dev, editare video, România',
+  schemaName: 'Agenție de publicitate Valea Jiului',
+  schemaDescription:
+    'Agenție de publicitate și marketing multimedia din Valea Jiului, județul Hunedoara, cu servicii de branding, web, video și campanii pentru clienți din România.',
+  sections: ['services', 'proof', 'faq', 'contact'],
 };
 
 // FAQ — written as natural questions/answers for Answer Engine Optimization.

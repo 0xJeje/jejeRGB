@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, SEO, SERVICE_PAGES, LOCAL_LANDING } from '../data/site.js';
+---
+
+<Base
+  title={`Hartă site | ${SITE.brand}`}
+  description="Pagini servicii JEJE.RBG: branding, design grafic, editare video, web development, marketing digital și agenție de publicitate din Valea Jiului."
+  path="/sitemap"
+  keywords={SEO.keywords}
+>
+  <main class="sitemap-page">
+    <div class="container">
+      <h1 class="mono">HARTĂ SITE</h1>
+      <ul>
+        <li><a href="/">Acasă — JEJE.RBG</a></li>
+        <li>
+          <a href={`/${LOCAL_LANDING.slug}`}>{LOCAL_LANDING.schemaName}</a>
+        </li>
+        {
+          SERVICE_PAGES.map((p) => (
+            <li>
+              <a href={`/servicii/${p.slug}`}>{p.schemaName}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .sitemap-page {
+    min-height: 100vh;
+    padding: 6rem 0 4rem;
+  }
+
+  .sitemap-page h1 {
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 2rem;
+  }
+
+  .sitemap-page ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sitemap-page a {
+    color: var(--accent);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+
+  .sitemap-page a:hover {
+    text-decoration: underline;
+  }
+</style>

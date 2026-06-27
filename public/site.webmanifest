@@ -1,0 +1,19 @@
+{
+  "name": "JEJE.RBG — Agenție Multimedia Valea Jiului",
+  "short_name": "JEJE.RBG",
+  "description": "Agenție de publicitate, branding, web dev și editare video din Valea Jiului, Hunedoara, România.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "ro",
+  "categories": ["business", "design", "marketing"],
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ]
+}

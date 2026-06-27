@@ -6,8 +6,8 @@ import { FAQ } from '../data/site.js';
     <div class="design-grid-top">
       <h2 class="section-title"><span class="title-num">[?]</span> FAQ</h2>
       <p class="desc-text">
-        <span class="ro">Întrebări frecvente despre serviciile de marketing, branding, web și video.</span>
-        <span class="en">Frequently asked questions about marketing, branding, web and video services.</span>
+        <span class="ro" lang="ro">Întrebări frecvente despre serviciile de marketing, branding, web și video.</span>
+        <span class="en" lang="en" data-nosnippet hidden>Frequently asked questions about marketing, branding, web and video services.</span>
       </p>
     </div>
 
@@ -16,12 +16,12 @@ import { FAQ } from '../data/site.js';
         FAQ.map((f) => (
           <details class="faq-item">
             <summary>
-              <span class="ro">{f.q_ro}</span>
-              <span class="en">{f.q_en}</span>
+              <span class="ro" lang="ro">{f.q_ro}</span>
+              <span class="en" lang="en" data-nosnippet hidden>{f.q_en}</span>
             </summary>
             <div class="faq-answer">
-              <span class="ro">{f.a_ro}</span>
-              <span class="en">{f.a_en}</span>
+              <span class="ro" lang="ro">{f.a_ro}</span>
+              <span class="en" lang="en" data-nosnippet hidden>{f.a_en}</span>
             </div>
           </details>
         ))

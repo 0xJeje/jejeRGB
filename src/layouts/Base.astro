@@ -1,109 +1,44 @@
 ---
 import '../styles/global.css';
-import { SITE, SEO, FAQ } from '../data/site.js';
+import { SITE, SEO } from '../data/site.js';
+import { absoluteUrl, buildJsonLd } from '../lib/seo.js';
 
-const canonical = new URL('/', SITE.url).href;
+const {
+  title = SEO.titleRo,
+  description = SEO.descriptionRo,
+  keywords = SEO.keywords,
+  path = '/',
+  service = null,
+} = Astro.props;
 
-const professionalService = {
-  '@type': 'ProfessionalService',
-  '@id': `${SITE.url}/#business`,
-  name: SITE.brand,
-  alternateName: `${SITE.personName} — ${SITE.jobTitle}`,
-  description: SEO.descriptionRo,
-  url: SITE.url,
-  image: SEO.ogImage,
-  email: `mailto:${SITE.email}`,
-  telephone: SITE.phone,
-  priceRange: '$$',
-  founder: { '@id': `${SITE.url}/#person` },
-  areaServed: [
-    { '@type': 'Place', name: SITE.region },
-    { '@type': 'AdministrativeArea', name: SITE.county },
-    { '@type': 'Country', name: SITE.country },
-  ],
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: SITE.region,
-    addressRegion: SITE.county,
-    addressCountry: SITE.countryCode,
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: SITE.geo.lat,
-    longitude: SITE.geo.lng,
-  },
-  sameAs: SITE.sameAs,
-  hasOfferCatalog: {
-    '@type': 'OfferCatalog',
-    name: 'Servicii multimedia',
-    itemListElement: SITE.services.map((s) => ({
-      '@type': 'Offer',
-      itemOffered: { '@type': 'Service', name: s },
-    })),
-  },
-};
-
-const person = {
-  '@type': 'Person',
-  '@id': `${SITE.url}/#person`,
-  name: SITE.personName,
-  alternateName: SITE.brand,
-  jobTitle: SITE.jobTitle,
-  url: SITE.url,
-  worksFor: { '@id': `${SITE.url}/#business` },
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: SITE.region,
-    addressRegion: SITE.county,
-    addressCountry: SITE.countryCode,
-  },
-  knowsAbout: SITE.services,
-  sameAs: SITE.sameAs,
-};
-
-const website = {
-  '@type': 'WebSite',
-  '@id': `${SITE.url}/#website`,
-  url: SITE.url,
-  name: SITE.brand,
-  inLanguage: ['ro', 'en'],
-  publisher: { '@id': `${SITE.url}/#business` },
-};
-
-const faqPage = {
-  '@type': 'FAQPage',
-  '@id': `${SITE.url}/#faq`,
-  mainEntity: FAQ.map((f) => ({
-    '@type': 'Question',
-    name: f.q_ro,
-    acceptedAnswer: { '@type': 'Answer', text: f.a_ro },
-  })),
-};
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [professionalService, person, website, faqPage],
-};
+const canonical = absoluteUrl(path);
+const jsonLd = buildJsonLd({ path, title, description, service });
 ---
 
 <!doctype html>
-<html lang="ro">
+<html lang="ro" translate="no">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
+    <meta http-equiv="content-language" content="ro-RO" />
     <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
-    <title>{SEO.titleRo}</title>
-    <meta name="description" content={SEO.descriptionRo} />
-    <meta name="keywords" content={SEO.keywords} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
     <meta name="author" content={SITE.personName} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="ro" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#000000" />
 
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap-index.xml" />
     <!-- Geo / local SEO -->
     <meta name="geo.region" content="RO-HD" />
     <meta name="geo.placename" content="Valea Jiului, Hunedoara" />
@@ -116,20 +51,21 @@ const jsonLd = {
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.brand} />
-    <meta property="og:title" content={SEO.titleRo} />
-    <meta property="og:description" content={SEO.descriptionRo} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={SEO.ogImage} />
+    <meta property="og:image:alt" content={SEO.ogImageAlt} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="ro_RO" />
-    <meta property="og:locale:alternate" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={SEO.titleRo} />
-    <meta name="twitter:description" content={SEO.descriptionRo} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={SEO.ogImage} />
+    <meta name="twitter:image:alt" content={SEO.ogImageAlt} />
 
     <!-- Fonts: preload self-hosted to avoid render-blocking -->
     <link

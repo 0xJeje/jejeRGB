@@ -27,7 +27,6 @@ export function initUI() {
       if (progress === 100) {
         clearInterval(bootSequence);
         setTimeout(() => {
-          loadingScreen.classList.remove('is-active');
           loadingScreen.style.opacity = '0';
           loadingScreen.style.visibility = 'hidden';
         }, 400);
@@ -40,7 +39,6 @@ export function initUI() {
   const navLogo = document.getElementById('nav-logo');
   const heroTitle = document.getElementById('hero-title');
   let isScrolling = false;
-  let logoVisible = false;
 
   window.addEventListener(
     'scroll',
@@ -50,15 +48,10 @@ export function initUI() {
           if (window.scrollY > 50) nav.classList.add('scrolled');
           else nav.classList.remove('scrolled');
 
-          if (heroTitle && navLogo) {
-            const heroTop = heroTitle.getBoundingClientRect().top;
-            if (!logoVisible && heroTop < 50) {
-              navLogo.classList.add('visible');
-              logoVisible = true;
-            } else if (logoVisible && heroTop > 80) {
-              navLogo.classList.remove('visible');
-              logoVisible = false;
-            }
+          if (heroTitle) {
+            const heroRect = heroTitle.getBoundingClientRect();
+            if (heroRect.top < 60) navLogo.classList.add('visible');
+            else navLogo.classList.remove('visible');
           }
           isScrolling = false;
         });
@@ -130,6 +123,23 @@ export function initUI() {
   const langToggle = document.getElementById('toggle-lang');
   let currentLang = 'ro';
 
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('.ro').forEach((el) => {
+      if (lang === 'ro') el.removeAttribute('hidden');
+      else el.setAttribute('hidden', '');
+    });
+
+    document.querySelectorAll('.en').forEach((el) => {
+      if (lang === 'en') el.removeAttribute('hidden');
+      else el.setAttribute('hidden', '');
+    });
+
+    if (langToggle) langToggle.innerText = lang === 'ro' ? 'EN' : 'RO';
+  }
+
   function updateFormTranslations(lang) {
     document.querySelectorAll('[data-ro][data-en]').forEach((el) => {
       const translatedText = el.getAttribute(`data-${lang}`);
@@ -145,12 +155,11 @@ export function initUI() {
 
   if (langToggle) {
     langToggle.addEventListener('click', () => {
-      currentLang = currentLang === 'ro' ? 'en' : 'ro';
-      document.documentElement.lang = currentLang;
-      langToggle.innerText = currentLang === 'ro' ? 'EN' : 'RO';
+      const nextLang = currentLang === 'ro' ? 'en' : 'ro';
+      setLanguage(nextLang);
 
       const phrases =
-        currentLang === 'ro'
+        nextLang === 'ro'
           ? [
               'ARHITECT DIGITAL',
               'SPECIALIST BRANDING',
@@ -171,12 +180,13 @@ export function initUI() {
             ];
 
       if (updateScramblePhrases) updateScramblePhrases(phrases);
-      updateFormTranslations(currentLang);
+      updateFormTranslations(nextLang);
       langToggle.blur();
     });
   }
 
-  updateFormTranslations(currentLang);
+  setLanguage('ro');
+  updateFormTranslations('ro');
 
   // ---- Mobile menu ----
   const menuTrigger = document.getElementById('menu-trigger');

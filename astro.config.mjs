@@ -6,7 +6,22 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://jeje.ro',
   trailingSlash: 'ignore',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      serialize(item) {
+        if (item.url === 'https://jeje.ro/') {
+          return { ...item, priority: 1, changefreq: 'weekly' };
+        }
+        if (
+          item.url.includes('/servicii/') ||
+          item.url.includes('agentie-publicitate-valea-jiului')
+        ) {
+          return { ...item, priority: 0.85, changefreq: 'monthly' };
+        }
+        return { ...item, priority: 0.5, changefreq: 'monthly' };
+      },
+    }),
+  ],
   build: {
     inlineStylesheets: 'auto',
   },

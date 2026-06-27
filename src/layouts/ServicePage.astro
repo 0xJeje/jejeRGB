@@ -1,0 +1,61 @@
+---
+import Base from './Base.astro';
+import Nav from '../components/Nav.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import Overlay from '../components/Overlay.astro';
+
+const { page } = Astro.props;
+const path = `/servicii/${page.slug}`;
+---
+
+<Base
+  title={page.title}
+  description={page.description}
+  keywords={page.keywords}
+  path={path}
+  service={{
+    name: page.schemaName,
+    description: page.schemaDescription,
+    slug: page.slug,
+  }}
+>
+  <Nav />
+  <Overlay />
+
+  <main>
+    <nav class="service-back-nav" aria-label="Navigare pagină serviciu">
+      <div class="container">
+        <a href="/" class="mono service-back-link">
+          <span class="ro" lang="ro">← JEJE.RBG — ACASĂ</span>
+          <span class="en" lang="en" data-nosnippet hidden>← JEJE.RBG — HOME</span>
+        </a>
+      </div>
+    </nav>
+    <slot />
+  </main>
+
+  <MobileMenu />
+</Base>
+
+<script>
+  import '../scripts/main.js';
+</script>
+
+<style>
+  .service-back-nav {
+    padding: calc(var(--nav-height, 4rem) + 1rem) 0 0;
+  }
+
+  .service-back-link {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  .service-back-link:hover {
+    opacity: 1;
+  }
+</style>

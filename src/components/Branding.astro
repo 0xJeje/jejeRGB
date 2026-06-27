@@ -23,9 +23,9 @@ const slides = [
           <div class={`slide-card trigger-overlay${i === 0 ? ' active' : ''}`} data-project={s.id}>
             <div class="slide-info">
               <span class="mono text-accent">{s.code} // {s.name}</span>
-              <p class="mono slide-desc ro">{s.ro}</p>
-              <p class="mono slide-desc en">{s.en}</p>
-              <span class="mono expand-hint"><span class="ro">VEZI_PROIECT ↗</span><span class="en">CLICK_TO_EXPAND ↗</span></span>
+              <p class="mono slide-desc ro" lang="ro">{s.ro}</p>
+              <p class="mono slide-desc en" lang="en" data-nosnippet hidden>{s.en}</p>
+              <span class="mono expand-hint"><span class="ro" lang="ro">VEZI_PROIECT ↗</span><span class="en" lang="en" data-nosnippet hidden>CLICK_TO_EXPAND ↗</span></span>
             </div>
             <div class="slide-img">
               <img src={s.img} alt={s.alt} width="800" height="800" loading="lazy" decoding="async" />
@@ -36,8 +36,8 @@ const slides = [
     </div>
 
     <div class="container drag-hint-wrapper desktop-only">
-      <span class="mono drag-hint text-accent ro">⟷ APASĂ ȘI TRAGE PENTRU A EXPLORA</span>
-      <span class="mono drag-hint text-accent en">⟷ HOLD & DRAG TO EXPLORE</span>
+      <span class="mono drag-hint text-accent ro" lang="ro">⟷ APASĂ ȘI TRAGE PENTRU A EXPLORA</span>
+      <span class="mono drag-hint text-accent en" lang="en" data-nosnippet hidden>⟷ HOLD & DRAG TO EXPLORE</span>
     </div>
 
     <div class="container">

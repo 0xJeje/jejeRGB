@@ -13,8 +13,8 @@ const stats = [
         stats.map((s) => (
           <div class="proof-cell">
             <span class="proof-num">{s.num}<span class="unit">{s.unit}</span></span>
-            <span class="proof-label ro">{s.label_ro}</span>
-            <span class="proof-label en">{s.label_en}</span>
+            <span class="proof-label ro" lang="ro">{s.label_ro}</span>
+            <span class="proof-label en" lang="en" data-nosnippet hidden>{s.label_en}</span>
           </div>
         ))
       }

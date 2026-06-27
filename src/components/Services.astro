@@ -45,10 +45,10 @@ const services = [
 <section id="servicii" class="bg-black">
   <div class="container">
     <div class="design-grid-top">
-      <h2 class="section-title"><span class="title-num">[00]</span> <span class="ro">SERVICII</span><span class="en">SERVICES</span></h2>
+      <h2 class="section-title"><span class="title-num">[00]</span> <span class="ro" lang="ro">SERVICII</span><span class="en" lang="en" data-nosnippet hidden>SERVICES</span></h2>
       <p class="desc-text">
-        <span class="ro">Agenție multimedia & de producție publicitară. Un singur partener pentru branding, web, video și marketing.</span>
-        <span class="en">A multimedia & advertising production studio. One partner for branding, web, video and marketing.</span>
+        <span class="ro" lang="ro">Agenție multimedia & de producție publicitară. Un singur partener pentru branding, web, video și marketing.</span>
+        <span class="en" lang="en" data-nosnippet hidden>A multimedia & advertising production studio. One partner for branding, web, video and marketing.</span>
       </p>
     </div>
 
@@ -57,10 +57,10 @@ const services = [
         services.map((s) => (
           <a class="service-card" href={s.href}>
             <span class="svc-num">{s.num}</span>
-            <h3 class="ro">{s.title_ro}</h3>
-            <h3 class="en">{s.title_en}</h3>
-            <p class="ro">{s.desc_ro}</p>
-            <p class="en">{s.desc_en}</p>
+            <h3 class="ro" lang="ro">{s.title_ro}</h3>
+            <h3 class="en" lang="en" data-nosnippet hidden>{s.title_en}</h3>
+            <p class="ro" lang="ro">{s.desc_ro}</p>
+            <p class="en" lang="en" data-nosnippet hidden>{s.desc_en}</p>
             <span class="svc-arrow">→</span>
           </a>
         ))
