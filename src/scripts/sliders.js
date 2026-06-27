@@ -1,8 +1,6 @@
 window.dragDistance = 0;
 window.dragStartTime = 0;
 
-import { pixelConstruct, pixelDeconstruct } from './pixel-transition.js';
-
 export function initSliders() {
   // ----------------------------------------
   // A. Branding Slider (Smart Auto-Scroll)
@@ -24,31 +22,64 @@ export function initSliders() {
   let startBrandScrollRef = null;
   let startBauhausScrollRef = null;
 
-  let brandTransitionLock = false;
-  let brandSlideDirection = 1;
-
-  async function playEnter(slide) {
-    slide.classList.remove('leaving');
-    slide.classList.add('active', 'entering');
-    slide.dataset.slideDir = String(brandSlideDirection);
-    await pixelConstruct(slide);
-    slide.classList.remove('entering');
-    delete slide.dataset.slideDir;
+  function retriggerImgAnimation(img) {
+    if (!img) return;
+    img.style.animation = 'none';
+    void img.offsetWidth;
+    img.style.removeProperty('animation');
+    img.style.imageRendering = 'pixelated';
   }
 
-  async function playLeave(slide) {
+  function playEnter(slide) {
+    slide.classList.remove('leaving', 'active');
+    const img = slide.querySelector('.slide-img img');
+    retriggerImgAnimation(img);
+    void slide.offsetWidth;
+    slide.classList.add('active');
+    if (img) {
+      img.addEventListener(
+        'animationend',
+        (e) => {
+          if (e.target !== img || e.animationName !== 'brandPixelToHQ') return;
+          img.style.imageRendering = 'auto';
+        },
+        { once: true }
+      );
+    }
+  }
+
+  function playLeave(slide, onDone) {
     slide.classList.remove('active');
     slide.classList.add('leaving');
-    slide.dataset.slideDir = String(brandSlideDirection);
-    await pixelDeconstruct(slide);
-    slide.classList.remove('leaving');
-    delete slide.dataset.slideDir;
+
+    const img = slide.querySelector('.slide-img img');
+    const finish = () => {
+      slide.classList.remove('leaving');
+      if (img) {
+        img.style.animation = 'none';
+        img.style.removeProperty('animation');
+        img.style.imageRendering = 'auto';
+      }
+      onDone?.();
+    };
+
+    if (img) {
+      retriggerImgAnimation(img);
+      img.addEventListener(
+        'animationend',
+        (e) => {
+          if (e.target !== img || e.animationName !== 'brandHQToPixel') return;
+          finish();
+        },
+        { once: true }
+      );
+    } else {
+      finish();
+    }
   }
 
-  async function updateSlider() {
-    if (window.innerWidth >= 768 || !brandTrack || brandTransitionLock) return;
-
-    brandTransitionLock = true;
+  function updateSlider() {
+    if (window.innerWidth >= 768 || !brandTrack) return;
 
     const slides = brandTrack.querySelectorAll('.slide-card');
     const outgoing = [];
@@ -63,58 +94,37 @@ export function initSliders() {
     }
 
     for (let i = originalSlidesCount; i < slides.length; i++) {
-      slides[i].classList.remove('active', 'leaving', 'entering');
+      slides[i].classList.remove('active', 'leaving');
     }
 
-    try {
-      await Promise.all([
-        ...outgoing.map((slide) => playLeave(slide)),
-        incoming ? playEnter(incoming) : Promise.resolve(),
-      ]);
-    } finally {
-      brandTransitionLock = false;
+    const showIncoming = () => {
+      if (incoming && !incoming.classList.contains('active')) playEnter(incoming);
+    };
+
+    if (outgoing.length) {
+      let finished = 0;
+      outgoing.forEach((slide) => {
+        playLeave(slide, () => {
+          finished += 1;
+          if (finished === outgoing.length) showIncoming();
+        });
+      });
+    } else {
+      showIncoming();
     }
 
     if (counter) counter.innerText = `${currentSlide + 1} / ${originalSlidesCount}`;
   }
 
-  if (brandTrack) {
-    let brandTouchStartX = 0;
-
-    brandTrack.addEventListener(
-      'touchstart',
-      (e) => {
-        if (window.innerWidth >= 768) return;
-        brandTouchStartX = e.touches[0].clientX;
-      },
-      { passive: true }
-    );
-
-    brandTrack.addEventListener('touchend', (e) => {
-      if (window.innerWidth >= 768 || brandTransitionLock) return;
-      const delta = brandTouchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(delta) < 48) return;
-      brandSlideDirection = delta > 0 ? 1 : -1;
-      if (delta > 0) {
-        currentSlide = (currentSlide + 1) % originalSlidesCount;
-      } else {
-        currentSlide = (currentSlide - 1 + originalSlidesCount) % originalSlidesCount;
-      }
-      updateSlider();
-    });
-  }
-
   if (btnNext && btnPrev) {
     btnNext.addEventListener('click', () => {
       if (window.innerWidth < 768) {
-        brandSlideDirection = 1;
         currentSlide = (currentSlide + 1) % originalSlidesCount;
         updateSlider();
       }
     });
     btnPrev.addEventListener('click', () => {
       if (window.innerWidth < 768) {
-        brandSlideDirection = -1;
         currentSlide = (currentSlide - 1 + originalSlidesCount) % originalSlidesCount;
         updateSlider();
       }
@@ -124,6 +134,17 @@ export function initSliders() {
   if (brandSection && brandTrack) {
     brandTrack.addEventListener('dragstart', (e) => e.preventDefault());
     brandTrack.innerHTML = brandTrack.innerHTML + brandTrack.innerHTML;
+
+    const initialImg = brandTrack.querySelector('.slide-card.active .slide-img img');
+    if (initialImg) {
+      initialImg.addEventListener(
+        'animationend',
+        (e) => {
+          if (e.animationName === 'brandPixelToHQ') initialImg.style.imageRendering = 'auto';
+        },
+        { once: true }
+      );
+    }
 
     const autoScrollBrand = () => {
       if (
