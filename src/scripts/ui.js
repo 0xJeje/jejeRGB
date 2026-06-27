@@ -38,25 +38,24 @@ export function initUI() {
   // ---- Nav scroll effect ----
   const nav = document.getElementById('main-nav');
   const navLogo = document.getElementById('nav-logo');
+  const heroTitle = document.getElementById('hero-title');
   let isScrolling = false;
   let logoVisible = false;
-  const LOGO_SHOW_SCROLL_Y = 120;
-  const LOGO_HIDE_SCROLL_Y = 80;
 
   window.addEventListener(
     'scroll',
     () => {
       if (!isScrolling) {
         window.requestAnimationFrame(() => {
-          const scrollY = window.scrollY;
-          if (scrollY > 50) nav.classList.add('scrolled');
+          if (window.scrollY > 50) nav.classList.add('scrolled');
           else nav.classList.remove('scrolled');
 
-          if (navLogo) {
-            if (!logoVisible && scrollY > LOGO_SHOW_SCROLL_Y) {
+          if (heroTitle && navLogo) {
+            const heroTop = heroTitle.getBoundingClientRect().top;
+            if (!logoVisible && heroTop < 50) {
               navLogo.classList.add('visible');
               logoVisible = true;
-            } else if (logoVisible && scrollY < LOGO_HIDE_SCROLL_Y) {
+            } else if (logoVisible && heroTop > 80) {
               navLogo.classList.remove('visible');
               logoVisible = false;
             }
@@ -252,12 +251,7 @@ export function initUI() {
       if (target) {
         e.preventDefault();
         const offset = nav ? nav.offsetHeight : 0;
-        const prefersTouch =
-          window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-        window.scrollTo({
-          top: target.offsetTop - offset,
-          behavior: prefersTouch ? 'auto' : 'smooth',
-        });
+        window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
       }
     });
   });

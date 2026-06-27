@@ -133,18 +133,9 @@
 
 html,
 body {
-  width: 100%;
-}
-
-html {
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-}
-
-body {
-  position: relative;
-  overflow-x: clip;
   overflow-x: hidden;
+  width: 100%;
+  position: relative;
 }
 
 html {
@@ -2255,16 +2246,6 @@ body.low-power-mode .project-overlay {
    13. TOUCH DEVICE OVERRIDES
 ========================================= */
 @media (hover: none) and (pointer: coarse) {
-  html,
-  body {
-    touch-action: pan-y pinch-zoom;
-  }
-
-  #main-nav.scrolled {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-
   .cursor-dot {
     display: none !important;
   }
@@ -2275,9 +2256,7 @@ body.low-power-mode .project-overlay {
     cursor: auto !important;
   }
   .hero {
-    /* lvh exceeds visible height while mobile browser chrome is shown */
-    min-height: 100lvh;
-    overflow: clip;
+    min-height: calc(100svh + 2rem);
   }
 }
 
