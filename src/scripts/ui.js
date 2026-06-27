@@ -27,6 +27,7 @@ export function initUI() {
       if (progress === 100) {
         clearInterval(bootSequence);
         setTimeout(() => {
+          loadingScreen.classList.remove('is-active');
           loadingScreen.style.opacity = '0';
           loadingScreen.style.visibility = 'hidden';
         }, 400);
@@ -40,6 +41,26 @@ export function initUI() {
   const heroTitle = document.getElementById('hero-title');
   let isScrolling = false;
 
+  if (heroTitle && navLogo) {
+    let logoVisible = false;
+
+    const logoObserver = new IntersectionObserver(
+      (entries) => {
+        const top = entries[0].boundingClientRect.top;
+        if (!logoVisible && top < 50) {
+          navLogo.classList.add('visible');
+          logoVisible = true;
+        } else if (logoVisible && top > 80) {
+          navLogo.classList.remove('visible');
+          logoVisible = false;
+        }
+      },
+      { rootMargin: '-60px 0px 0px 0px', threshold: [0, 1] }
+    );
+
+    logoObserver.observe(heroTitle);
+  }
+
   window.addEventListener(
     'scroll',
     () => {
@@ -47,12 +68,6 @@ export function initUI() {
         window.requestAnimationFrame(() => {
           if (window.scrollY > 50) nav.classList.add('scrolled');
           else nav.classList.remove('scrolled');
-
-          if (heroTitle) {
-            const heroRect = heroTitle.getBoundingClientRect();
-            if (heroRect.top < 60) navLogo.classList.add('visible');
-            else navLogo.classList.remove('visible');
-          }
           isScrolling = false;
         });
         isScrolling = true;
@@ -261,7 +276,11 @@ export function initUI() {
       if (target) {
         e.preventDefault();
         const offset = nav ? nav.offsetHeight : 0;
-        window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
+        const prefersTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+        window.scrollTo({
+          top: target.offsetTop - offset,
+          behavior: prefersTouch ? 'auto' : 'smooth',
+        });
       }
     });
   });

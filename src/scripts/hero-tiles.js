@@ -259,45 +259,7 @@ export function initHeroTiles() {
     { passive: true }
   );
 
-  // Mobile: flat at load; short tap reveals displacement; scroll fades it in behind hero copy.
-  let heroTouchStart = null;
-
-  heroSection.addEventListener(
-    'touchstart',
-    (e) => {
-      if (!isTouch) return;
-      const touch = e.touches[0];
-      if (touch) {
-        heroTouchStart = { x: touch.clientX, y: touch.clientY, time: Date.now() };
-      }
-    },
-    { passive: true }
-  );
-
-  heroSection.addEventListener(
-    'touchend',
-    (e) => {
-      if (!isTouch || !heroTouchStart) return;
-      const touch = e.changedTouches[0];
-      const dx = touch.clientX - heroTouchStart.x;
-      const dy = touch.clientY - heroTouchStart.y;
-      const isTap =
-        Math.hypot(dx, dy) < 10 && Date.now() - heroTouchStart.time < 400;
-
-      if (isTap) {
-        setPointer(touch.clientX, touch.clientY);
-        setTimeout(() => {
-          isPointerActive = false;
-          updateScrollInfluence();
-        }, 200);
-      } else {
-        isPointerActive = false;
-        updateScrollInfluence();
-      }
-      heroTouchStart = null;
-    },
-    { passive: true }
-  );
+  // Mobile: scroll-driven influence only — touch handlers fight native scrolling.
 
   window.addEventListener(
     'scroll',
