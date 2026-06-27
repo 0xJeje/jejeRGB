@@ -1,6 +1,8 @@
 window.dragDistance = 0;
 window.dragStartTime = 0;
 
+import { pixelConstruct, pixelDeconstruct } from './pixel-transition.js';
+
 export function initSliders() {
   // ----------------------------------------
   // A. Branding Slider (Smart Auto-Scroll)
@@ -22,28 +24,25 @@ export function initSliders() {
   let startBrandScrollRef = null;
   let startBauhausScrollRef = null;
 
-  function playEnter(slide) {
-    slide.classList.remove('leaving', 'active');
-    void slide.offsetWidth;
+  let brandTransitionLock = false;
+
+  async function playEnter(slide) {
+    slide.classList.remove('leaving');
     slide.classList.add('active');
+    await pixelConstruct(slide);
   }
 
-  function playLeave(slide, onDone) {
+  async function playLeave(slide) {
     slide.classList.remove('active');
     slide.classList.add('leaving');
-    slide.addEventListener(
-      'animationend',
-      (e) => {
-        if (e.animationName !== 'pixelHide') return;
-        slide.classList.remove('leaving');
-        onDone?.();
-      },
-      { once: true }
-    );
+    await pixelDeconstruct(slide);
+    slide.classList.remove('leaving');
   }
 
-  function updateSlider() {
-    if (window.innerWidth >= 768 || !brandTrack) return;
+  async function updateSlider() {
+    if (window.innerWidth >= 768 || !brandTrack || brandTransitionLock) return;
+
+    brandTransitionLock = true;
 
     const slides = brandTrack.querySelectorAll('.slide-card');
     const outgoing = [];
@@ -61,20 +60,13 @@ export function initSliders() {
       slides[i].classList.remove('active', 'leaving');
     }
 
-    const showIncoming = () => {
-      if (incoming && !incoming.classList.contains('active')) playEnter(incoming);
-    };
-
-    if (outgoing.length) {
-      let finished = 0;
-      outgoing.forEach((slide) => {
-        playLeave(slide, () => {
-          finished += 1;
-          if (finished === outgoing.length) showIncoming();
-        });
-      });
-    } else {
-      showIncoming();
+    try {
+      for (const slide of outgoing) {
+        await playLeave(slide);
+      }
+      if (incoming) await playEnter(incoming);
+    } finally {
+      brandTransitionLock = false;
     }
 
     if (counter) counter.innerText = `${currentSlide + 1} / ${originalSlidesCount}`;
