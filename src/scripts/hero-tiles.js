@@ -59,12 +59,30 @@ export function initHeroTiles() {
     return { x: clientX - rect.left, y: clientY - rect.top };
   }
 
+  function getHeroFocusPoint() {
+    const heroContent = heroSection.querySelector('.hero-content');
+    if (heroContent && isTouch) {
+      const sectionRect = heroSection.getBoundingClientRect();
+      const contentRect = heroContent.getBoundingClientRect();
+      return {
+        x: contentRect.left + contentRect.width / 2 - sectionRect.left,
+        y: contentRect.top + contentRect.height / 2 - sectionRect.top,
+      };
+    }
+    return { x: width * 0.5, y: height * 0.5 };
+  }
+
+  function influenceStrength() {
+    if (!isTouch) return 1;
+    if (isPointerActive) return 1;
+    return scrollInfluence;
+  }
+
   function setPointer(clientX, clientY) {
     const coords = heroCoords(clientX, clientY);
     targetX = coords.x;
     targetY = coords.y;
     isPointerActive = true;
-    scrollInfluence = 0;
   }
 
   function updateScrollInfluence() {
@@ -73,8 +91,10 @@ export function initHeroTiles() {
     const visible = Math.min(rect.height, window.innerHeight);
     const traveled = Math.max(0, -rect.top);
     scrollInfluence = Math.min(1, traveled / visible);
-    targetX = width * 0.5;
-    targetY = scrollInfluence * height;
+
+    const focus = getHeroFocusPoint();
+    targetX = focus.x;
+    targetY = focus.y;
   }
 
   class Tile {
@@ -178,8 +198,9 @@ export function initHeroTiles() {
     width = canvas.width = heroSection.offsetWidth;
     height = canvas.height = heroSection.offsetHeight;
     buildGrid();
-    targetX = smoothX = width * 0.5;
-    targetY = smoothY = height * 0.5;
+    const focus = getHeroFocusPoint();
+    targetX = smoothX = focus.x;
+    targetY = smoothY = focus.y;
   }
 
   function animate() {
@@ -188,7 +209,8 @@ export function initHeroTiles() {
     smoothX += (targetX - smoothX) * POINTER_LERP;
     smoothY += (targetY - smoothY) * POINTER_LERP;
 
-    const radius = influenceRadius();
+    const strength = influenceStrength();
+    const radius = influenceRadius() * strength;
     const px = smoothX;
     const py = smoothY;
 
@@ -201,7 +223,14 @@ export function initHeroTiles() {
     }
 
     tiles.forEach((tile) => {
-      tile.updateTargets(px, py, radius);
+      if (radius > 1) {
+        tile.updateTargets(px, py, radius);
+      } else {
+        tile.targetHighlight = 0;
+        tile.targetOffsetX = 0;
+        tile.targetOffsetY = 0;
+        tile.targetRotation = 0;
+      }
       tile.tick();
       tile.draw(ctx);
     });
@@ -230,8 +259,45 @@ export function initHeroTiles() {
     { passive: true }
   );
 
-  // Mobile: scroll-driven tile drift only (see updateScrollInfluence). No touch tracking —
-  // it competes with page scroll and the fixed nav hit area.
+  // Mobile: flat at load; short tap reveals displacement; scroll fades it in behind hero copy.
+  let heroTouchStart = null;
+
+  heroSection.addEventListener(
+    'touchstart',
+    (e) => {
+      if (!isTouch) return;
+      const touch = e.touches[0];
+      if (touch) {
+        heroTouchStart = { x: touch.clientX, y: touch.clientY, time: Date.now() };
+      }
+    },
+    { passive: true }
+  );
+
+  heroSection.addEventListener(
+    'touchend',
+    (e) => {
+      if (!isTouch || !heroTouchStart) return;
+      const touch = e.changedTouches[0];
+      const dx = touch.clientX - heroTouchStart.x;
+      const dy = touch.clientY - heroTouchStart.y;
+      const isTap =
+        Math.hypot(dx, dy) < 10 && Date.now() - heroTouchStart.time < 400;
+
+      if (isTap) {
+        setPointer(touch.clientX, touch.clientY);
+        setTimeout(() => {
+          isPointerActive = false;
+          updateScrollInfluence();
+        }, 200);
+      } else {
+        isPointerActive = false;
+        updateScrollInfluence();
+      }
+      heroTouchStart = null;
+    },
+    { passive: true }
+  );
 
   window.addEventListener(
     'scroll',
@@ -267,6 +333,10 @@ export function initHeroTiles() {
 
   isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   resize();
+  if (isTouch) {
+    scrollInfluence = 0;
+    isPointerActive = false;
+  }
   updateScrollInfluence();
   animate();
 }

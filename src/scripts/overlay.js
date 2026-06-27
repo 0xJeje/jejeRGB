@@ -12,18 +12,15 @@ export function initOverlay() {
 
   let currentCategoryKeys = [];
   let currentOverlayIndex = -1;
-  let overlayScrollY = 0;
 
   function lockPageScroll() {
-    overlayScrollY = window.scrollY;
-    document.body.classList.add('no-scroll');
-    document.body.style.top = `-${overlayScrollY}px`;
+    document.documentElement.classList.add('overlay-open');
+    document.querySelector('main')?.setAttribute('inert', '');
   }
 
   function unlockPageScroll() {
-    document.body.classList.remove('no-scroll');
-    document.body.style.top = '';
-    window.scrollTo(0, overlayScrollY);
+    document.documentElement.classList.remove('overlay-open');
+    document.querySelector('main')?.removeAttribute('inert');
   }
 
   function renderOverlayContent(id) {

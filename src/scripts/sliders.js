@@ -26,8 +26,23 @@ export function initSliders() {
     if (window.innerWidth < 768) {
       const currentSlides = document.querySelectorAll('#brand-track .slide-card');
       currentSlides.forEach((slide, index) => {
-        slide.classList.remove('active');
-        if (index % originalSlidesCount === currentSlide) slide.classList.add('active');
+        const shouldBeActive = index % originalSlidesCount === currentSlide;
+        const isActive = slide.classList.contains('active');
+
+        if (isActive && !shouldBeActive) {
+          slide.classList.remove('active');
+          slide.classList.add('leaving');
+          slide.addEventListener(
+            'animationend',
+            () => slide.classList.remove('leaving'),
+            { once: true }
+          );
+        } else if (shouldBeActive && !isActive) {
+          slide.classList.remove('leaving');
+          slide.classList.add('active');
+        } else if (!shouldBeActive) {
+          slide.classList.remove('active', 'leaving');
+        }
       });
       if (counter) counter.innerText = `${currentSlide + 1} / ${originalSlidesCount}`;
     }
