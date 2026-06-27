@@ -33,18 +33,18 @@ export const SITE = {
 
 export const SEO = {
   titleRo:
-    'JEJE.RBG | Agenție Multimedia, Branding, Web Dev & Editare Video — Valea Jiului, Hunedoara',
+    'JEJE.RBG | Agenție Multimedia, Branding, Web Dev, Design Grafic & Editare Video — Valea Jiului, Hunedoara',
   descriptionRo:
-    'Agenție de publicitate și marketing din Valea Jiului, Hunedoara. Branding, design grafic, dezvoltare website, editare video, reclame și digital marketing. 4M+ vizualizări generate.',
+    'Agenție de publicitate și marketing din Valea Jiului, Hunedoara. Branding, design grafic, dezvoltare website, editare video, reclame și digital marketing. Peste 10M de vizualizări generate in 2026.',
   descriptionEn:
-    'Advertising & marketing studio in Valea Jiului, Hunedoara, Romania. Branding, graphic design, web development, video editing, ads and digital marketing. 4M+ views generated.',
+    'Advertising & marketing studio in Valea Jiului, Hunedoara, Romania. Branding, graphic design, web development, video editing, ads and digital marketing. Over 10M views generated in 2026.',
   keywords:
     'marketing, branding, reclame, website, web dev, editare video, agenție de publicitate, agenție de marketing, agenție de producție publicitară, agenție de digital marketing, designer grafic, video editor, logo design, identitate vizuală, social media, Hunedoara, Valea Jiului, Petroșani, Vulcan, Lupeni, Uricani, Aninoasa, România',
   ogImageAlt:
     'JEJE.RBG — agenție multimedia de branding, web development, editare video și marketing din Valea Jiului, Hunedoara',
   // 1200x630 OG image generated on the fly by Cloudinary from an existing asset.
   ogImage:
-    'https://res.cloudinary.com/dphdjjfvr/image/upload/v1782541753/favicon_dxabwv.png',
+    'https://res.cloudinary.com/dphdjjfvr/image/upload/v1782547065/og-image_coetyb.jpg',
 };
 
 // Focused landing pages — same portfolio sections, unique head/meta for search intent.
