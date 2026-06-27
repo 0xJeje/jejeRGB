@@ -1,0 +1,17 @@
+{
+  "name": "jeje-rbg-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "JEJE.RBG - Multimedia Design portfolio. Brutalist/glitch identity. Branding, Web Dev, Video & Social. Valea Jiului, Hunedoara, Romania.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.6.1",
+    "@astrojs/sitemap": "^3.3.0"
+  }
+}

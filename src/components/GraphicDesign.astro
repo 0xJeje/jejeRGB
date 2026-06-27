@@ -1,0 +1,49 @@
+---
+const items = [
+  { id: 'graphic-1', span: 'span-2x2', img: 'Artwork_Dreea_-_Scuze_icc7oq.jpg', v: 'v1778572687', alt: 'Cover art design — Dreea "Scuze" single' },
+  { id: 'graphic-2', span: 'span-1x2', img: '629595904_122269562858227954_4869806751389132552_n_ii5o0y.jpg', v: 'v1778582975', alt: 'Dreea promotional social media graphic' },
+  { id: 'graphic-3', span: 'span-1x2', img: 'spiral-cover_diuj60.png', v: 'v1778582848', alt: 'Spiral Tribe social media cover design' },
+  { id: 'graphic-4', span: 'span-3x4 contain-img', img: '1778583780725.publer.com_yjvgcs.jpg', v: 'v1778583818', alt: 'Spiral Tribe social media post design' },
+  { id: 'graphic-5', span: 'span-2x2', img: 'Artwork_Muzica-Populara22_dqqcdb.jpg', v: 'v1778572689', alt: 'Muzica Populara cover artwork' },
+  { id: 'graphic-6', span: 'span-2x1', img: 'fest_flyer_egdusn.jpg', v: 'v1778582594', alt: 'Playground festival event flyer design' },
+  { id: 'graphic-7', span: 'span-1x1', img: 'Artwork_Ela_-_Cine_m-a_pus_nmdsl3.jpg', v: 'v1778572688', alt: 'Ela "Cine m-a pus" cover art' },
+  { id: 'graphic-8', span: 'span-1x1', img: 'Artwork_Crina_-_Cel_mai_bun_refren_wgsez8.jpg', v: 'v1778572688', alt: 'Crina "Cel mai bun refren" cover art' },
+  { id: 'graphic-9', span: 'span-3x4 contain-img', img: '1778583791046.publer.com_rupqra.jpg', v: 'v1778583818', alt: 'Spiral Tribe social media post design' },
+  { id: 'graphic-10', span: 'span-2x2', img: 'merch_design_vyntec.png', v: 'v1778582593', alt: 'Stratek Soundsystem merchandise design' },
+  { id: 'graphic-11', span: 'span-1x1', img: 'Artwork_Dreea_-_Drama_pe_hartie_a34d8a.jpg', v: 'v1778572687', alt: 'Dreea "Dramă pe hârtie" cover art' },
+  { id: 'graphic-12', span: 'span-1x1', img: 'Artwork_Dreea_-_Ma-ntelegi_crwnfn.jpg', v: 'v1778572688', alt: 'Dreea "Mă-nțelegi" cover art' },
+  { id: 'graphic-13', span: 'span-3x4 contain-img', img: '1778583790074.publer.com_qrqksi.jpg', v: 'v1778583817', alt: 'Spiral Tribe social media post design' },
+  { id: 'graphic-14', span: 'span-1x2 contain-img', img: 'dreea_x_i-auzi_una_zwyh4l.jpg', v: 'v1778585511', alt: 'Dreea x I-Auzi Una event flyer' },
+  { id: 'graphic-15', span: 'span-3x4 contain-img', img: 'social-media-post_dqdfg1.jpg', v: 'v1778599992', alt: 'Social media post design' },
+];
+const base = 'https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_600';
+---
+<section id="graphic-design" class="bg-grey interactive-section">
+  <div class="container">
+    <div class="design-grid-top">
+      <h2 class="section-title ro"><span class="title-num">[02]</span> DESIGN GRAFIC</h2>
+      <h2 class="section-title en"><span class="title-num">[02]</span> GRAPHIC DESIGN</h2>
+      <div class="mono desc-text" style="margin-bottom: 1rem;">
+        <span class="ro">Sisteme vizuale construite pentru impact, unde estetica transformă materialele promoționale în piese grafice de sine stătătoare</span>
+        <span class="en">Visual systems built for impact, where aesthetics transform promotional materials into standalone graphic pieces</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bauhaus-scroll-wrapper" id="bauhaus-scroll">
+    <div class="bauhaus-grid">
+      {
+        items.map((it) => (
+          <div class={`bauhaus-item ${it.span} trigger-overlay`} data-project={it.id}>
+            <img src={`${base}/${it.v}/${it.img}`} alt={it.alt} loading="lazy" decoding="async" />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="container drag-hint-wrapper">
+    <span class="mono drag-hint text-accent ro">⟷ APASĂ ȘI TRAGE // ◯ APASĂ PENTRU DETALII</span>
+    <span class="mono drag-hint text-accent en">⟷ HOLD & DRAG // ◯ TAP TO EXPAND</span>
+  </div>
+</section>

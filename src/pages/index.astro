@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Loader from '../components/Loader.astro';
+import Nav from '../components/Nav.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import Hero from '../components/Hero.astro';
+import Proof from '../components/Proof.astro';
+import Services from '../components/Services.astro';
+import Branding from '../components/Branding.astro';
+import GraphicDesign from '../components/GraphicDesign.astro';
+import VideoSocial from '../components/VideoSocial.astro';
+import WebDev from '../components/WebDev.astro';
+import Faq from '../components/Faq.astro';
+import Contact from '../components/Contact.astro';
+import Overlay from '../components/Overlay.astro';
+---
+
+<Base>
+  <Loader />
+  <div class="cursor-dot"></div>
+
+  <Nav />
+  <Overlay />
+
+  <main>
+    <Hero />
+    <Proof />
+    <Services />
+    <Branding />
+    <GraphicDesign />
+    <VideoSocial />
+    <WebDev />
+    <Faq />
+    <Contact />
+  </main>
+
+  <MobileMenu />
+</Base>
+
+<script>
+  import '../scripts/main.js';
+</script>

@@ -1,0 +1,51 @@
+---
+const slides = [
+  { id: 'brand-1', code: 'A', name: 'ALLMA ROAD', ro: 'Găzduire', en: 'Lodging', img: 'https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568436/allmaroad_logo_spmjie.jpg', alt: 'Allma Road branding & logo design' },
+  { id: 'brand-2', code: 'B', name: 'spiraltribe.ro', ro: 'Agenție de Turism', en: 'Travel Agency', img: 'https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568436/spiraltribe.ro_logo_tztyuo.jpg', alt: 'Spiral Tribe travel agency logo and brand identity' },
+  { id: 'brand-3', code: 'C', name: 'Dreea', ro: 'Artist', en: 'Artist', img: 'https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568435/dreea_logo_oavkdy.jpg', alt: 'Dreea music artist brand identity' },
+  { id: 'brand-4', code: 'D', name: 'Aldi Records', ro: 'Casa de discuri', en: 'Record label', img: 'https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568436/aldi_logo_gvhkak.jpg', alt: 'Aldi Records record label logo design' },
+  { id: 'brand-5', code: 'E', name: 'Beyond the Peak', ro: 'ONG', en: 'NGO', img: 'https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568435/beyondthepeak_logo_xtgwla.jpg', alt: 'Beyond the Peak NGO logo and branding' },
+  { id: 'brand-6', code: 'F', name: 'Haiduk Labs', ro: 'Agenție Multi-Media', en: 'Multi-Media Agency', img: 'https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778683932/haiduk_luvywj.png', alt: 'Haiduk Labs multimedia agency logo' },
+  { id: 'brand-7', code: 'G', name: 'M&P Facade', ro: 'Arhitectură Exterior', en: 'Exterior Architecture', img: 'https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800/v1778568435/mp-logo_dm2get.jpg', alt: 'M&P Facade exterior architecture brand logo' },
+];
+---
+<section id="branding" class="interactive-section">
+  <div class="container">
+    <div class="design-grid-top">
+      <h2 class="section-title"><span class="title-num">[01]</span> BRANDING</h2>
+    </div>
+  </div>
+
+  <div class="branding-slider">
+    <div class="slider-track" id="brand-track">
+      {
+        slides.map((s, i) => (
+          <div class={`slide-card trigger-overlay${i === 0 ? ' active' : ''}`} data-project={s.id}>
+            <div class="slide-info">
+              <span class="mono text-accent">{s.code} // {s.name}</span>
+              <p class="mono slide-desc ro">{s.ro}</p>
+              <p class="mono slide-desc en">{s.en}</p>
+              <span class="mono expand-hint"><span class="ro">VEZI_PROIECT ↗</span><span class="en">CLICK_TO_EXPAND ↗</span></span>
+            </div>
+            <div class="slide-img">
+              <img src={s.img} alt={s.alt} width="800" height="800" loading="lazy" decoding="async" />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="container drag-hint-wrapper desktop-only">
+      <span class="mono drag-hint text-accent ro">⟷ APASĂ ȘI TRAGE PENTRU A EXPLORA</span>
+      <span class="mono drag-hint text-accent en">⟷ HOLD & DRAG TO EXPLORE</span>
+    </div>
+
+    <div class="container">
+      <div class="slider-controls">
+        <button class="mono slider-btn" id="brand-prev">← PREV</button>
+        <span class="mono" id="brand-counter">1 / 7</span>
+        <button class="mono slider-btn" id="brand-next">NEXT →</button>
+      </div>
+    </div>
+  </div>
+</section>

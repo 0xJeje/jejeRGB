@@ -1,0 +1,23 @@
+---
+const stats = [
+  { num: '50', unit: '+', label_ro: 'Proiecte livrate', label_en: 'Projects delivered' },
+  { num: '7', unit: '+', label_ro: 'Identități de brand', label_en: 'Brand identities' },
+    { num: '10M', unit: '+', label_ro: 'Vizualizări generate in 2026', label_en: 'Views generated' },
+  { num: '100', unit: '%', label_ro: 'Pe bază de brief', label_en: 'Brief-driven' },
+];
+---
+<section class="proof" aria-label="Rezultate">
+  <div class="container">
+    <div class="proof-grid">
+      {
+        stats.map((s) => (
+          <div class="proof-cell">
+            <span class="proof-num">{s.num}<span class="unit">{s.unit}</span></span>
+            <span class="proof-label ro">{s.label_ro}</span>
+            <span class="proof-label en">{s.label_en}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

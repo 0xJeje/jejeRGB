@@ -1,0 +1,38 @@
+---
+const sites = [
+  {
+    title: 'A // SPIRALTRIBE.RO',
+    href: 'https://www.spiraltribe.ro',
+    ro: 'O platformă dinamică pentru agenția de turism, axată pe experiențe de rezervare fără probleme și aventuri atent selecționate pentru exploratorul modern.',
+    en: 'A dynamic travel agency platform focused on seamless booking experiences and curated adventures for the modern explorer.',
+  },
+  {
+    title: 'B // DREEA.ART',
+    href: 'https://www.dreea.art',
+    ro: 'O pagină de destinație imersivă, concepută pentru a amplifica identitatea sonică și viziunea creativă a artistei muzicale Dreea.',
+    en: 'A sleek, immersive landing page designed to amplify the sonic identity and creative vision of musical artist Dreea.',
+  },
+];
+---
+<section id="web-dev" class="bg-grey">
+  <div class="container">
+    <h2 class="section-title"><span class="title-num">[04]</span> WEB DEV</h2>
+
+    <div class="minimal-web-list">
+      {
+        sites.map((s) => (
+          <div class="web-item">
+            <div>
+              <h3>{s.title}</h3>
+              <p class="ro">{s.ro}</p>
+              <p class="en">{s.en}</p>
+            </div>
+            <div class="web-actions">
+              <a href={s.href} target="_blank" rel="noopener" class="action-link primary">LIVE PREVIEW ↗</a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

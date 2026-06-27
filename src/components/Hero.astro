@@ -1,0 +1,57 @@
+---
+const disciplines = [
+  'BRANDING',
+  'WEB DEVELOPMENT',
+  'EDITARE VIDEO',
+  'DESIGN GRAFIC',
+  'SOCIAL MEDIA',
+  'RECLAME',
+  'DIGITAL MARKETING',
+];
+// Duplicated once for a seamless marquee loop.
+const marquee = [...disciplines, ...disciplines];
+---
+<section class="hero" id="hero-slim">
+  <canvas id="hero-tiles-canvas" class="hero-tiles-canvas" aria-hidden="true"></canvas>
+
+  <div class="container hero-content" style="position: relative; z-index: 2;">
+    <div class="hero-top">
+      <h1 class="liquid-text hero-title" id="hero-title">JEJE.RBG</h1>
+      <div id="scramble-target" class="large-text mono text-accent">ARHITECT DIGITAL</div>
+    </div>
+
+    <p class="hero-statement">
+      <span class="ro">
+        Partener <strong>multimedia complet</strong> din Valea Jiului, Hunedoara.
+        Branding, website-uri, editare video și campanii care transformă atenția în rezultate.
+      </span>
+      <span class="en">
+        Your <strong>full multimedia partner</strong> from Valea Jiului, Hunedoara, Romania.
+        Branding, websites, video editing and campaigns that turn attention into results.
+      </span>
+    </p>
+
+    <div class="hero-cta-row">
+      <a href="#contact" class="btn-brutal">
+        <span class="ro">HAI SĂ LUCRĂM ↗</span><span class="en">LET'S WORK ↗</span>
+      </a>
+      <a href="#servicii" class="btn-brutal ghost">
+        <span class="ro">VEZI SERVICII</span><span class="en">SEE SERVICES</span>
+      </a>
+    </div>
+
+    <div class="tagline-transition">
+      <div class="sarcastic-quote">
+        <span class="default-text down-arrow ro">↓ Vorba multă... ↓</span>
+        <span class="default-text down-arrow en">↓ Less talking... ↓</span>
+        <span class="hover-text text-white">:)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-marquee" aria-hidden="true">
+    <div class="hero-marquee-track">
+      {marquee.map((d) => <span>{d}</span>)}
+    </div>
+  </div>
+</section>

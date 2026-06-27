@@ -1,0 +1,77 @@
+---
+const ytBase = 'https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_800';
+const ytVideos = [
+  { href: 'https://www.youtube.com/watch?v=vTZ4YsTFtNk&t=9s', img: `${ytBase}/v1778342104/Ferma1_kvcm2c.jpg`, alt: 'Long-form video edit — 24H Horse Caretaker', views: '173k VIEWS', dur: '37:15', t_ro: 'Am Fost Ingrijitoare de Cai 24H cu @Nana', t_en: '24H Horse Caretaker with @Nana' },
+  { href: 'https://youtube.com', img: `${ytBase}/v1778342165/EE1_qfgmaa.jpg`, alt: 'Europa Express Episode 1 video edit', views: '98K VIEWS', dur: '01:32:41', t_ro: 'EUROPA EXPRESS EP.1 - 6 Vedete Se Bat', t_en: 'EUROPA EXPRESS EP.1 - 6 Celebrities Fight' },
+  { href: 'https://youtube.com', img: `${ytBase}/v1778342103/EE2_ra9m4v.jpg`, alt: 'Europa Express Episode 2 video edit', views: '44K VIEWS', dur: '01:17:15', t_ro: 'EUROPA EXPRESS EP.2 - Prima Cearta', t_en: 'EUROPA EXPRESS EP.2 - The First Fight' },
+];
+
+const reelBase = 'https://res.cloudinary.com/dphdjjfvr/image/upload/f_auto,q_auto,c_limit,w_500';
+const reels = [
+  { href: 'https://vm.tiktok.com/ZNRGd5rUo/', img: `${reelBase}/v1778598410/short-form_2_dm2tze.png`, alt: 'TikTok short-form video, 903K views', views: '903K VIEWS', cat: 'TIKTOK', stats: '❤️65.9K 💬417 📤15K 🔁1.2K' },
+  { href: 'https://www.instagram.com/reels/DVEPZp6jAX4/', img: `${reelBase}/v1778598409/short-form_3_arnmdy.jpg`, alt: 'Instagram Reel, 532K views', views: '532K VIEWS', cat: 'REEL', stats: '❤️34.6K 💬172 📤11.5K 🔁723' },
+  { href: 'https://www.instagram.com/reel/C7l3CSkt8Lk/', img: `${reelBase}/v1778598409/short-form_1_t1ifdh.jpg`, alt: 'Instagram Reel, 1.1M views', views: '1.1M VIEWS', cat: 'REEL', stats: '❤️37.9K 💬322 📤15K 🔖1.5K' },
+  { href: 'https://youtube.com/shorts/j4RwkSrqWHg', img: `${reelBase}/v1778598409/short-form_4_d0zqez.jpg`, alt: 'YouTube Short, 894K views', views: '894k VIEWS', cat: 'SHORTS', stats: '❤️8.8K 💬45 📤6.3K' },
+  { href: 'https://vm.tiktok.com/ZNRGdunmC/', img: `${reelBase}/v1778598410/short-form_1_lnrp3c.png`, alt: 'TikTok short-form video, 566K views', views: '566K VIEWS', cat: 'TIKTOK', stats: '❤️48.6K 💬79 📤447 🔖2.4K' },
+  { href: 'https://www.instagram.com/reel/DXTfLL6DUeg/', img: `${reelBase}/v1778598409/short-form_2_gnrelb.jpg`, alt: 'Instagram Reel, 121K views', views: '121K VIEWS', cat: 'REEL', stats: '❤️2.6K 💬261 📤744 🔁55' },
+];
+---
+<section id="video-social" class="bg-black">
+  <div class="container">
+    <div class="design-grid-top" style="margin-bottom: var(--space-md);">
+      <h2 class="section-title"><span class="title-num">[03]</span> VIDEO & SOCIAL</h2>
+      <div class="mono desc-text">
+        <span class="ro">Editare video avansată, direcție artistică și conținut optimizat pentru retenție pe platformele de social media.</span>
+        <span class="en">Advanced video editing, art direction and content optimized for retention on social media platforms.</span>
+      </div>
+    </div>
+
+    <div class="video-category-title mono text-accent ro" style="margin-top: 3rem;">/// CONTENT_LONG_FORM<br>[EDITARE]</div>
+    <div class="video-category-title mono text-accent en" style="margin-top: 3rem;">/// LONG_FORM_CONTENT<br>[EDITING]</div>
+
+    <div class="yt-grid">
+      {
+        ytVideos.map((v) => (
+          <a href={v.href} target="_blank" rel="noopener" class="yt-card">
+            <div class="yt-thumb">
+              <img src={v.img} alt={v.alt} width="800" height="450" loading="lazy" decoding="async" />
+              <div class="digital-scanline"></div>
+              <div class="yt-stats mono">{v.views}</div>
+              <div class="yt-duration mono">{v.dur}</div>
+            </div>
+            <div class="yt-meta">
+              <h3 class="yt-title ro">{v.t_ro}</h3>
+              <h3 class="yt-title en">{v.t_en}</h3>
+              <span class="mono expand-hint video-hint" style="margin-top: 1rem; display: block;"><span class="ro">RULEAZĂ_VIDEO ►</span><span class="en">PLAY_MEDIA ►</span></span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="video-category-title mono text-accent ro" style="margin-top: var(--space-lg);">/// CONTENT_SHORT_FORM<br>[CONCEPT & DIRECȚIE]</div>
+    <div class="video-category-title mono text-accent en" style="margin-top: var(--space-lg);">/// SHORT_FORM_CONTENT<br>[CONCEPT & DIRECTION]</div>
+
+    <div class="reels-stack-wrapper interactive-section">
+      <div class="reels-grid" id="reels-grid">
+        {
+          reels.map((r) => (
+            <a href={r.href} target="_blank" rel="noopener" class="reel-card">
+              <div class="reel-thumb">
+                <img src={r.img} alt={r.alt} width="500" height="889" loading="lazy" decoding="async" />
+                <div class="digital-scanline"></div>
+                <div class="yt-stats mono">{r.views}</div>
+                <div class="reel-category mono">{r.cat}</div>
+                <div class="reel-stats mono">{r.stats}</div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+      <div class="reels-controls mono desktop-only-hide">
+        <button id="reel-prev">← PREV</button>
+        <button id="reel-next">NEXT →</button>
+      </div>
+    </div>
+  </div>
+</section>
