@@ -1,4 +1,5 @@
-const DURATION = 560;
+const DURATION = 720;
+const MIN_PIXELS = 12;
 
 function shouldAnimate() {
   return (
@@ -38,52 +39,33 @@ function waitForImage(img) {
   });
 }
 
-async function buildPixelGrid(container, img) {
-  const rect = container.getBoundingClientRect();
-  const w = Math.max(1, Math.floor(rect.width));
-  const h = Math.max(1, Math.floor(rect.height));
-  const cell = Math.max(10, Math.min(16, Math.floor(w / 28)));
-
+function captureSource(img, w, h) {
   const source = document.createElement('canvas');
   source.width = w;
   source.height = h;
   const sourceCtx = source.getContext('2d');
-
   try {
     sourceCtx.drawImage(img, 0, 0, w, h);
   } catch {
     return null;
   }
+  return source;
+}
 
-  const blocks = [];
-  const cols = Math.ceil(w / cell);
-  const rows = Math.ceil(h / cell);
+/** Jitter-style: draw image at progressively finer pixel grid, scaled up with crisp blocks. */
+function drawPixelatedFrame(ctx, source, w, h, pixelCount) {
+  const cols = Math.max(MIN_PIXELS, Math.round(pixelCount));
+  const rows = Math.max(MIN_PIXELS, Math.round((h / w) * cols));
 
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-      const sx = col * cell;
-      const sy = row * cell;
-      const sw = Math.min(cell, w - sx);
-      const sh = Math.min(cell, h - sy);
-      const angle = (Math.random() - 0.5) * Math.PI * 0.35;
-      const dist = 40 + Math.random() * 90;
+  const low = document.createElement('canvas');
+  low.width = cols;
+  low.height = rows;
+  const lowCtx = low.getContext('2d');
+  lowCtx.drawImage(source, 0, 0, cols, rows);
 
-      blocks.push({
-        sx,
-        sy,
-        sw,
-        sh,
-        hx: sx,
-        hy: sy,
-        vx: Math.cos(angle) * dist,
-        vy: Math.sin(angle) * dist,
-        rot: (Math.random() - 0.5) * 0.45,
-        delay: Math.random() * 0.38,
-      });
-    }
-  }
-
-  return { source, w, h, blocks };
+  ctx.clearRect(0, 0, w, h);
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(low, 0, 0, cols, rows, 0, 0, w, h);
 }
 
 function mountCanvas(container, w, h) {
@@ -95,44 +77,6 @@ function mountCanvas(container, w, h) {
   canvas.style.height = '100%';
   container.appendChild(canvas);
   return canvas;
-}
-
-function drawBlocks(ctx, data, progress, mode) {
-  const { source, w, h, blocks } = data;
-  ctx.clearRect(0, 0, w, h);
-
-  for (const block of blocks) {
-    const span = 1 - block.delay * 0.55;
-    const local = Math.max(0, Math.min(1, (progress - block.delay) / span));
-    const eased = mode === 'construct' ? easeOutCubic(local) : easeInCubic(local);
-    const scatter = mode === 'construct' ? 1 - eased : eased;
-    const alpha = mode === 'construct' ? Math.min(1, local * 1.25) : 1 - eased;
-
-    if (alpha <= 0.01) continue;
-
-    const x = block.hx + block.vx * scatter;
-    const y = block.hy + block.vy * scatter;
-    const rot = block.rot * scatter;
-
-    ctx.globalAlpha = alpha;
-    ctx.save();
-    ctx.translate(x + block.sw * 0.5, y + block.sh * 0.5);
-    ctx.rotate(rot);
-    ctx.drawImage(
-      source,
-      block.sx,
-      block.sy,
-      block.sw,
-      block.sh,
-      -block.sw * 0.5,
-      -block.sh * 0.5,
-      block.sw,
-      block.sh
-    );
-    ctx.restore();
-  }
-
-  ctx.globalAlpha = 1;
 }
 
 function runFrames(drawFrame) {
@@ -167,8 +111,11 @@ export async function pixelConstruct(slide) {
   const loaded = await waitForImage(img);
   if (!loaded) return;
 
-  const data = await buildPixelGrid(container, img);
-  if (!data) return;
+  const rect = container.getBoundingClientRect();
+  const w = Math.max(1, Math.floor(rect.width));
+  const h = Math.max(1, Math.floor(rect.height));
+  const source = captureSource(img, w, h);
+  if (!source) return;
 
   const existing = container.querySelector('.slide-img-pixel-canvas');
   if (existing) existing.remove();
@@ -176,10 +123,15 @@ export async function pixelConstruct(slide) {
   container.classList.add('is-pixel-anim');
   img.style.opacity = '0';
 
-  const canvas = mountCanvas(container, data.w, data.h);
+  const canvas = mountCanvas(container, w, h);
   const ctx = canvas.getContext('2d');
 
-  await runFrames((progress) => drawBlocks(ctx, data, progress, 'construct'));
+  await runFrames((progress) => {
+    const eased = easeOutCubic(progress);
+    const pixels = MIN_PIXELS + (w - MIN_PIXELS) * eased;
+    drawPixelatedFrame(ctx, source, w, h, pixels);
+  });
+
   cleanupCanvas(container, canvas, img);
 }
 
@@ -194,8 +146,11 @@ export async function pixelDeconstruct(slide) {
   const loaded = await waitForImage(img);
   if (!loaded) return;
 
-  const data = await buildPixelGrid(container, img);
-  if (!data) return;
+  const rect = container.getBoundingClientRect();
+  const w = Math.max(1, Math.floor(rect.width));
+  const h = Math.max(1, Math.floor(rect.height));
+  const source = captureSource(img, w, h);
+  if (!source) return;
 
   const existing = container.querySelector('.slide-img-pixel-canvas');
   if (existing) existing.remove();
@@ -203,9 +158,14 @@ export async function pixelDeconstruct(slide) {
   container.classList.add('is-pixel-anim');
   img.style.opacity = '0';
 
-  const canvas = mountCanvas(container, data.w, data.h);
+  const canvas = mountCanvas(container, w, h);
   const ctx = canvas.getContext('2d');
 
-  await runFrames((progress) => drawBlocks(ctx, data, progress, 'deconstruct'));
+  await runFrames((progress) => {
+    const eased = easeInCubic(progress);
+    const pixels = w - (w - MIN_PIXELS) * eased;
+    drawPixelatedFrame(ctx, source, w, h, pixels);
+  });
+
   cleanupCanvas(container, canvas, img);
 }

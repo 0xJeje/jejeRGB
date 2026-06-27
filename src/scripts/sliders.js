@@ -25,18 +25,24 @@ export function initSliders() {
   let startBauhausScrollRef = null;
 
   let brandTransitionLock = false;
+  let brandSlideDirection = 1;
 
   async function playEnter(slide) {
     slide.classList.remove('leaving');
-    slide.classList.add('active');
+    slide.classList.add('active', 'entering');
+    slide.dataset.slideDir = String(brandSlideDirection);
     await pixelConstruct(slide);
+    slide.classList.remove('entering');
+    delete slide.dataset.slideDir;
   }
 
   async function playLeave(slide) {
     slide.classList.remove('active');
     slide.classList.add('leaving');
+    slide.dataset.slideDir = String(brandSlideDirection);
     await pixelDeconstruct(slide);
     slide.classList.remove('leaving');
+    delete slide.dataset.slideDir;
   }
 
   async function updateSlider() {
@@ -57,14 +63,14 @@ export function initSliders() {
     }
 
     for (let i = originalSlidesCount; i < slides.length; i++) {
-      slides[i].classList.remove('active', 'leaving');
+      slides[i].classList.remove('active', 'leaving', 'entering');
     }
 
     try {
-      for (const slide of outgoing) {
-        await playLeave(slide);
-      }
-      if (incoming) await playEnter(incoming);
+      await Promise.all([
+        ...outgoing.map((slide) => playLeave(slide)),
+        incoming ? playEnter(incoming) : Promise.resolve(),
+      ]);
     } finally {
       brandTransitionLock = false;
     }
@@ -72,15 +78,43 @@ export function initSliders() {
     if (counter) counter.innerText = `${currentSlide + 1} / ${originalSlidesCount}`;
   }
 
+  if (brandTrack) {
+    let brandTouchStartX = 0;
+
+    brandTrack.addEventListener(
+      'touchstart',
+      (e) => {
+        if (window.innerWidth >= 768) return;
+        brandTouchStartX = e.touches[0].clientX;
+      },
+      { passive: true }
+    );
+
+    brandTrack.addEventListener('touchend', (e) => {
+      if (window.innerWidth >= 768 || brandTransitionLock) return;
+      const delta = brandTouchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(delta) < 48) return;
+      brandSlideDirection = delta > 0 ? 1 : -1;
+      if (delta > 0) {
+        currentSlide = (currentSlide + 1) % originalSlidesCount;
+      } else {
+        currentSlide = (currentSlide - 1 + originalSlidesCount) % originalSlidesCount;
+      }
+      updateSlider();
+    });
+  }
+
   if (btnNext && btnPrev) {
     btnNext.addEventListener('click', () => {
       if (window.innerWidth < 768) {
+        brandSlideDirection = 1;
         currentSlide = (currentSlide + 1) % originalSlidesCount;
         updateSlider();
       }
     });
     btnPrev.addEventListener('click', () => {
       if (window.innerWidth < 768) {
+        brandSlideDirection = -1;
         currentSlide = (currentSlide - 1 + originalSlidesCount) % originalSlidesCount;
         updateSlider();
       }
