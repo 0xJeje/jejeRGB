@@ -27,6 +27,7 @@ export function initUI() {
       if (progress === 100) {
         clearInterval(bootSequence);
         setTimeout(() => {
+          loadingScreen.classList.remove('is-active');
           loadingScreen.style.opacity = '0';
           loadingScreen.style.visibility = 'hidden';
         }, 400);
@@ -39,6 +40,7 @@ export function initUI() {
   const navLogo = document.getElementById('nav-logo');
   const heroTitle = document.getElementById('hero-title');
   let isScrolling = false;
+  let logoVisible = false;
 
   window.addEventListener(
     'scroll',
@@ -48,10 +50,15 @@ export function initUI() {
           if (window.scrollY > 50) nav.classList.add('scrolled');
           else nav.classList.remove('scrolled');
 
-          if (heroTitle) {
-            const heroRect = heroTitle.getBoundingClientRect();
-            if (heroRect.top < 60) navLogo.classList.add('visible');
-            else navLogo.classList.remove('visible');
+          if (heroTitle && navLogo) {
+            const heroTop = heroTitle.getBoundingClientRect().top;
+            if (!logoVisible && heroTop < 50) {
+              navLogo.classList.add('visible');
+              logoVisible = true;
+            } else if (logoVisible && heroTop > 80) {
+              navLogo.classList.remove('visible');
+              logoVisible = false;
+            }
           }
           isScrolling = false;
         });

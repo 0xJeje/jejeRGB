@@ -139,7 +139,7 @@ body {
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   font-size: 16px;
 }
 
@@ -425,6 +425,9 @@ h6 {
   font-size: 0.8rem;
   transition: opacity 0.8s ease, visibility 0.8s;
 }
+#loading-screen:not(.is-active) {
+  pointer-events: none;
+}
 .loader-bar {
   width: 200px;
   height: 2px;
@@ -629,14 +632,32 @@ section {
   }
 
   #main-nav .nav-inner {
+    position: relative;
     min-height: 34px;
   }
   .nav-inner {
     justify-content: flex-end;
   }
+  .nav-logo {
+    position: absolute;
+    left: max(var(--space-sm), var(--nav-safe-left));
+    top: 50%;
+    max-width: min(42vw, 180px);
+    margin-right: 0;
+  }
+  .nav-logo:not(.visible) {
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(calc(-50% - 10px));
+  }
   .nav-logo.visible {
-    position: relative;
-    margin-right: auto;
+    position: absolute;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%);
     max-width: min(42vw, 180px);
   }
   .nav-actions {
@@ -2233,6 +2254,9 @@ body.low-power-mode .project-overlay {
   body.hide-native-cursor button,
   body.hide-native-cursor .interactive-section {
     cursor: auto !important;
+  }
+  .hero {
+    min-height: calc(100svh + 2rem);
   }
 }
 
