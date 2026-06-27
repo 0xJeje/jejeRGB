@@ -1198,22 +1198,24 @@ body.menu-open #main-nav {
   flex-direction: column;
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
   filter: none;
-  transform: translateY(10px);
+  transform: translateY(12px);
   clip-path: inset(0 0 100% 0);
   transition: none;
 }
+.slide-card.active,
+.slide-card.leaving {
+  visibility: visible;
+}
 .slide-card.active {
-  opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
-  clip-path: inset(0 0 0 0);
   z-index: 2;
   animation: pixelReveal 0.42s steps(8) forwards;
 }
 .slide-card.leaving {
-  z-index: 1;
   pointer-events: none;
+  z-index: 1;
   animation: pixelHide 0.28s steps(6) forwards;
 }
 .slide-info {
@@ -1256,18 +1258,10 @@ body.menu-open #main-nav {
 
 @media (max-width: 767px) {
   .slide-card {
-    opacity: 0 !important;
-    transform: translateY(12px) !important;
-    clip-path: inset(0 0 100% 0) !important;
     background: var(--bg);
-    filter: contrast(280%) brightness(1.8) saturate(0);
-    transition: none !important;
+    transition: none;
   }
   .slide-card.active {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-    clip-path: inset(0 0 0 0) !important;
-    filter: none !important;
     animation: pixelReveal 0.42s steps(8) forwards;
   }
   .slide-card.leaving {
@@ -1354,9 +1348,11 @@ body.menu-open #main-nav {
     position: relative;
     opacity: 1 !important;
     pointer-events: auto !important;
+    visibility: visible !important;
     filter: none !important;
     transform: none !important;
     clip-path: none !important;
+    animation: none !important;
     transition: transform 0.3s ease;
     border: none;
   }

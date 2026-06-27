@@ -22,30 +22,62 @@ export function initSliders() {
   let startBrandScrollRef = null;
   let startBauhausScrollRef = null;
 
-  function updateSlider() {
-    if (window.innerWidth < 768) {
-      const currentSlides = document.querySelectorAll('#brand-track .slide-card');
-      currentSlides.forEach((slide, index) => {
-        const shouldBeActive = index % originalSlidesCount === currentSlide;
-        const isActive = slide.classList.contains('active');
+  function playEnter(slide) {
+    slide.classList.remove('leaving', 'active');
+    void slide.offsetWidth;
+    slide.classList.add('active');
+  }
 
-        if (isActive && !shouldBeActive) {
-          slide.classList.remove('active');
-          slide.classList.add('leaving');
-          slide.addEventListener(
-            'animationend',
-            () => slide.classList.remove('leaving'),
-            { once: true }
-          );
-        } else if (shouldBeActive && !isActive) {
-          slide.classList.remove('leaving');
-          slide.classList.add('active');
-        } else if (!shouldBeActive) {
-          slide.classList.remove('active', 'leaving');
-        }
-      });
-      if (counter) counter.innerText = `${currentSlide + 1} / ${originalSlidesCount}`;
+  function playLeave(slide, onDone) {
+    slide.classList.remove('active');
+    slide.classList.add('leaving');
+    slide.addEventListener(
+      'animationend',
+      (e) => {
+        if (e.animationName !== 'pixelHide') return;
+        slide.classList.remove('leaving');
+        onDone?.();
+      },
+      { once: true }
+    );
+  }
+
+  function updateSlider() {
+    if (window.innerWidth >= 768 || !brandTrack) return;
+
+    const slides = brandTrack.querySelectorAll('.slide-card');
+    const outgoing = [];
+    let incoming = null;
+
+    for (let i = 0; i < originalSlidesCount; i++) {
+      const slide = slides[i];
+      if (!slide) continue;
+      const shouldBeActive = i === currentSlide;
+      if (slide.classList.contains('active') && !shouldBeActive) outgoing.push(slide);
+      if (shouldBeActive) incoming = slide;
     }
+
+    for (let i = originalSlidesCount; i < slides.length; i++) {
+      slides[i].classList.remove('active', 'leaving');
+    }
+
+    const showIncoming = () => {
+      if (incoming && !incoming.classList.contains('active')) playEnter(incoming);
+    };
+
+    if (outgoing.length) {
+      let finished = 0;
+      outgoing.forEach((slide) => {
+        playLeave(slide, () => {
+          finished += 1;
+          if (finished === outgoing.length) showIncoming();
+        });
+      });
+    } else {
+      showIncoming();
+    }
+
+    if (counter) counter.innerText = `${currentSlide + 1} / ${originalSlidesCount}`;
   }
 
   if (btnNext && btnPrev) {
