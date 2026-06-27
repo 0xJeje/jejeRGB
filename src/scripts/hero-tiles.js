@@ -230,33 +230,8 @@ export function initHeroTiles() {
     { passive: true }
   );
 
-  heroSection.addEventListener(
-    'touchstart',
-    (e) => {
-      isTouch = true;
-      const touch = e.touches[0];
-      if (touch) setPointer(touch.clientX, touch.clientY);
-    },
-    { passive: true }
-  );
-
-  heroSection.addEventListener(
-    'touchmove',
-    (e) => {
-      isTouch = true;
-      const touch = e.touches[0];
-      if (touch) setPointer(touch.clientX, touch.clientY);
-    },
-    { passive: true }
-  );
-
-  heroSection.addEventListener(
-    'touchend',
-    () => {
-      isPointerActive = false;
-    },
-    { passive: true }
-  );
+  // Mobile: scroll-driven tile drift only (see updateScrollInfluence). No touch tracking —
+  // it competes with page scroll and the fixed nav hit area.
 
   window.addEventListener(
     'scroll',

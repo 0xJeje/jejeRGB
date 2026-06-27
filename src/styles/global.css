@@ -611,6 +611,15 @@ section {
 }
 
 @media (max-width: 767px) {
+  /* Let page scroll through the nav chrome; only buttons/links stay tappable */
+  #main-nav {
+    pointer-events: none;
+  }
+  #main-nav .nav-inner,
+  #main-nav .nav-inner * {
+    pointer-events: auto;
+  }
+
   #main-nav .nav-inner {
     min-height: 34px;
   }

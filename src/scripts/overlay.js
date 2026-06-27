@@ -12,6 +12,19 @@ export function initOverlay() {
 
   let currentCategoryKeys = [];
   let currentOverlayIndex = -1;
+  let overlayScrollY = 0;
+
+  function lockPageScroll() {
+    overlayScrollY = window.scrollY;
+    document.body.classList.add('no-scroll');
+    document.body.style.top = `-${overlayScrollY}px`;
+  }
+
+  function unlockPageScroll() {
+    document.body.classList.remove('no-scroll');
+    document.body.style.top = '';
+    window.scrollTo(0, overlayScrollY);
+  }
 
   function renderOverlayContent(id) {
     const data = projectData[id];
@@ -110,13 +123,13 @@ export function initOverlay() {
     renderOverlayContent(id);
 
     overlay.style.display = 'flex';
-    document.body.classList.add('no-scroll');
+    lockPageScroll();
     scrollArea.scrollTop = 0;
   });
 
   function close() {
     overlay.style.display = 'none';
-    document.body.classList.remove('no-scroll');
+    unlockPageScroll();
   }
 
   closeOverlay.addEventListener('click', close);
